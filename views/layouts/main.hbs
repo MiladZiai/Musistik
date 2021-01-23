@@ -1,14 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Musistik</title>
-  </head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Musistik</title>
+        <link rel="stylesheet" type="text/css" href="/css/layout.css">
+        <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+        <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+        <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+    </head>
 
-  <body>
-    <h1>Write the layout code in this file</h1>
-    {{{body}}}
-  </body>
+    <body>
+        <!-- NAV -->
+        <header class="navbar">
+            <section class="navbar-section"><a href="/" style="box-shadow:none;"><img src="Logo.png" width="70px" height="70"></a>
+            </section>
+            <section class="navbar-center">
+                <a href="/" class="btn btn-link">Home</a>
+                <a href="/discover" class="btn btn-link">Discover</a>
+                <a href="/users" class="btn btn-link">Users</a>
+                <a href="/library" class="btn btn-link">Library</a>
+                <a href="/about" class="btn btn-link">About</a>
+                <a href="/contact" class="btn btn-link">Contact</a>
+            </section>
+            <section class="navbar-section">
+                <div class="input-group input-inline">
+                <a href="/signIn" class="btn" style="margin-right: 1vh; border-radius: 4vh">Sign In</a>
+                <a href="/signUp" class="btn btn-primary input-group-btn" style="border-radius: 4vh;">Sign Up</a>
+                </div>
+            </section>
+        </header>
 
+
+        {{{body}}}
+    </body>
 </html>
