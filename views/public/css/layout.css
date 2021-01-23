@@ -1,0 +1,12 @@
+header.navbar {
+    margin: 3%;
+}
+.btn.btn-link{
+    border:none !important;
+}
+.btn.btn-link:active, .btn.btn-link:focus .btn.btn-link:visited{
+    box-shadow: none !important;
+}
+.btn.btn-link:hover, :checked + a{
+    color: rgb(19, 6, 44) !important;
+}
