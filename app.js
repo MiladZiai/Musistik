@@ -5,7 +5,7 @@ const path = require('path')
 
 const app = express()
 
-app.set('views', path.join("musistik", "views"));
+app.set('views', path.join("", "views"));
 app.engine('hbs', expressHandlebars({
   defaultLayout: 'main.hbs',
 }))
