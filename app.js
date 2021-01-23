@@ -21,12 +21,32 @@ app.get('/', (req, res) => {
   res.render("home.hbs")
 })
 
+app.get('/discover', (req, res) => {
+  res.render("discover.hbs")
+})
+
+app.get('/users', (req, res) => {
+  res.render("users.hbs")
+})
+
+app.get('/library', (req, res) => {
+  res.render("library.hbs")
+})
+
 app.get('/about', (req, res) => {
   res.render("about.hbs")
 })
 
 app.get('/contact', (req, res) => {
   res.render("contact.hbs")
+})
+
+app.get('/signIn', (req, res) => {
+  res.render("signIn.hbs")
+})
+
+app.get('/signUp', (req, res) => {
+  res.render("signUp.hbs")
 })
 
 app.listen(8080, () => {

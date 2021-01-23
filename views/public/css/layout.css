@@ -3,6 +3,7 @@ header.navbar {
 }
 .btn.btn-link{
     border:none !important;
+    font-size: large !important;
 }
 .btn.btn-link:active, .btn.btn-link:focus .btn.btn-link:visited{
     box-shadow: none !important;
