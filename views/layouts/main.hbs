@@ -10,25 +10,36 @@
         <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
         <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
         <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
     </head>
 
     <body>
         <!-- NAV -->
         <header class="navbar">
-            <section class="navbar-section"><a href="/" style="box-shadow:none;"><img src="Logo.png" width="75px" height="75"></a>
+            <input type="checkbox" id="check">
+            <label for="check" class="checkbtn">
+                <i class="fas fa-bars"></i>
+            </label>
+
+            <section class="navbar-section logo">
+                <a href="/" style="box-shadow:none;">
+                    <img src="Logo.png" width="75px" height="75">
+                </a>
             </section>
-            <section class="navbar-center">
-                <a href="/" class="btn btn-link">Home</a>
-                <a href="/discover" class="btn btn-link">Discover</a>
-                <a href="/users" class="btn btn-link">Users</a>
-                <a href="/library" class="btn btn-link">Library</a>
-                <a href="/about" class="btn btn-link">About</a>
-                <a href="/contact" class="btn btn-link">Contact</a>
-            </section>
-            <section class="navbar-section">
+
+            <ul>
+                <li><a href="/" class="btn btn-link">Home</a></li>
+                <li><a href="/discover" class="btn btn-link">Discover</a></li>
+                <li><a href="/users" class="btn btn-link">Users</a></li>
+                <li><a href="/library" class="btn btn-link">Library</a></li>
+                <li><a href="/about" class="btn btn-link">About</a></li>
+                <li><a href="/contact" class="btn btn-link">Contact</a></li>
+            </ul>
+            
+            <section class="navbar-section sign">
                 <div class="input-group input-inline">
                 <a href="/signIn" class="btn" style="margin-right: 1vh; border-radius: 4vh">Sign In</a>
-                <a href="/signUp" class="btn btn-primary input-group-btn" style="border-radius: 4vh;">Sign Up</a>
+                <a href="/signUp" class="btn btn-primary" style="border-radius: 4vh;">Sign Up</a>
                 </div>
             </section>
         </header>

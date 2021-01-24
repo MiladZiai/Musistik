@@ -146,7 +146,6 @@ iframe {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
 }
 
 .container-contact1 {
@@ -154,6 +153,7 @@ iframe {
   background: #fff;
   border-radius: 10px;
   overflow: hidden;
+  margin: 5rem 0rem 5rem 0rem;
 
   display: -webkit-box;
   display: -webkit-flex;

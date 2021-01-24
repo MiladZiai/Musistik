@@ -3,6 +3,14 @@ const expressHandlebars = require('express-handlebars')
 const bodyParser = require('body-parser')
 const path = require('path')
 
+//routes
+const discover = require("./src/routes/discover")
+const library = require("./src/routes/library")
+const signIn = require("./src/routes/signIn")
+const signUp = require("./src/routes/signUp")
+const users = require("./src/routes/users")
+
+{
 const app = express()
 
 app.use(bodyParser.json())
@@ -21,18 +29,6 @@ app.get('/', (req, res) => {
   res.render("home.hbs")
 })
 
-app.get('/discover', (req, res) => {
-  res.render("discover.hbs")
-})
-
-app.get('/users', (req, res) => {
-  res.render("users.hbs")
-})
-
-app.get('/library', (req, res) => {
-  res.render("library.hbs")
-})
-
 app.get('/about', (req, res) => {
   res.render("about.hbs")
 })
@@ -41,14 +37,15 @@ app.get('/contact', (req, res) => {
   res.render("contact.hbs")
 })
 
-app.get('/signIn', (req, res) => {
-  res.render("signIn.hbs")
-})
-
-app.get('/signUp', (req, res) => {
-  res.render("signUp.hbs")
-})
+app.use("/discover", discover)
+app.use("/library", library)
+app.use("/signIn", signIn)
+app.use("/signUp", signUp)
+app.use("/users", users)
 
 app.listen(8080, () => {
   console.log("##### Web app listening on port: 8080 #####")
 })
+
+return app
+}
