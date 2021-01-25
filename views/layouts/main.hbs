@@ -23,7 +23,7 @@
 
             <section class="navbar-section logo">
                 <a href="/" style="box-shadow:none;">
-                    <img src="Logo.png" width="75px" height="75">
+                    <img src="/Logo.png" width="75px" height="75">
                 </a>
             </section>
 
@@ -38,8 +38,12 @@
             
             <section class="navbar-section sign">
                 <div class="input-group input-inline">
-                <a href="/signIn" class="btn" style="margin-right: 1vh; border-radius: 4vh">Sign In</a>
-                <a href="/signUp" class="btn btn-primary" style="border-radius: 4vh;">Sign Up</a>
+                    {{#if isLoggedIn}}
+                        <a href="/signOut" class="btn btn-error" style="border-radius: 4vh;">Sign Out</a>
+                    {{else}}
+                        <a href="/signIn" class="btn" style="margin-right: 1vh; border-radius: 4vh">Sign In</a>
+                        <a href="/signUp" class="btn btn-primary" style="border-radius: 4vh;">Sign Up</a>
+                    {{/if}}
                 </div>
             </section>
         </header>
