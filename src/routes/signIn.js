@@ -24,6 +24,7 @@ router.post('/', (req, res) => {
                 bcrypt.compare(password, user.password, function(err, result){
                     if(result == true) {
                         req.session.isLoggedIn = true
+                        req.session.userId = user.id
                         res.render("home.hbs", {isLoggedIn: req.session.isLoggedIn})
                     } else if(err) {
                         errors.push("Wrong Username and/or Password 2")
