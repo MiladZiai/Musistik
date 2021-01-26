@@ -89,7 +89,6 @@ section.sign {
 @media (min-width: 600px) {
     #grid { grid-template-columns: repeat(2, 1fr); }
 }
-
 @media (min-width: 600px) {
     #grid { grid-template-columns: repeat(3, 1fr); }
 }
@@ -99,7 +98,6 @@ section.sign {
     color: white;
     object-fit: cover;
 }
-
 .bottom-left {
     position: absolute;
     bottom: 0px;
@@ -130,4 +128,54 @@ section.sign {
     border-radius: 3vh;
     padding: 3rem;
     overflow-y: scroll;
+}
+
+/******************* Library Scrolling Container ******************/
+
+.section-library{
+    /*
+    width: 80vw;
+    background: #fff;
+    height: 12rem;
+    border-radius: 3vh;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    margin: 4rem 5rem 4rem 5rem;
+
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;*/
+    
+    margin: 4rem 5rem 4rem 5rem;
+    width: 80vw;
+    height: 12rem;
+    white-space: nowrap;
+    position: relative;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 3vh;
+}
+.box-section-library{/*
+    display: inline-block;
+    text-align: left;
+    margin: 2vw 2vw 2vw 2vw;
+    border-radius: 2vh;
+    width: 13vw;
+    height: 13vw;                 
+    background-color: #000000;*/
+    border-radius: 3vh;
+    width: 240px;
+    height: 240px;
+    background-color: #eee;
+    float: none;
+    
+    margin: 0 0.25%;
+    display: inline-block;
+    zoom: 1;
 }
