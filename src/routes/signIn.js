@@ -25,6 +25,8 @@ router.post('/', (req, res) => {
                     if(result == true) {
                         req.session.isLoggedIn = true
                         req.session.userId = user.id
+                        req.session.username = user.username
+                        
                         res.render("home.hbs", {isLoggedIn: req.session.isLoggedIn})
                     } else if(err) {
                         errors.push("Wrong Username and/or Password 2")

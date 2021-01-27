@@ -21,7 +21,7 @@ db.run(`
         title TEXT,
         image BLOB,
         private NUMERIC,
-        playlistOwner VARCHAR(26),
+        playlistOwner INTEGER,
         FOREIGN KEY(playlistOwner) REFERENCES User(id)
     )
 `)
@@ -41,6 +41,7 @@ db.run(`
     )
 `)
 
+
 exports.createUserAccount = function(username, email, password, callback) {
     const query = "INSERT INTO User (username, email, password) VALUES(?, ?, ?)"
     const values = [username, email, password]
@@ -55,5 +56,24 @@ exports.signIn = function(username, callback) {
 
     db.all(query, [username], function(error, users) {
         callback(error, users[0])
+    })
+}
+
+exports.createPlaylist = function(model, callback) {
+    const query = "INSERT INTO Playlist (title, image, private, playlistOwner) VALUES(?, ?, ?, ?)"
+    const values = [model.title, model.playlistImage, model.private, model.playListOwner]
+
+    db.run(query, values, function(error) {
+        callback(error)
+    })
+}
+
+exports.getAllPlaylistsByUsername = function(userId, callback) {
+    const query = `SELECT * 
+                    FROM Playlist
+                    WHERE playlistOwner = ?`
+    
+    db.all(query, [userId], function(error, playlist) {
+        callback(error, playlist)
     })
 }
