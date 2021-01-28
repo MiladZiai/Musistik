@@ -2,7 +2,12 @@
     <div class="wrapper">
         {{#if isLoggedIn}}
             <div class="create-playlist-btn">
-                <a href="/library/createPlaylist" class="btn" style="border-radius: 3vh; margin-left: 6rem">Create Playlist</a>
+                <a href="/library/createPlaylist" 
+                    class="btn" 
+                    style="border-radius: 3vh; margin-left: 6rem"
+                >
+                    Create Playlist
+                </a>
             </div>
 
             <div class="playlist-title-library">
@@ -10,7 +15,7 @@
             </div>
             <div class="section-library">
                 {{#each publicPlaylists}}
-                    <a href="#modal1" style="border-radius: 3vh;">
+                    <a href="#public-{{id}}" style="border-radius: 3vh;">
                         <div class="box-section-library">
                             <img src="/uploads/{{image}}"  alt="No image" class="img-responsive-library">
                             <div class="bottom-left-library">
@@ -26,7 +31,7 @@
             </div>
             <div class="section-library">
                 {{#each privatePlaylists}}
-                    <a href="#modal1" style="border-radius: 3vh;">
+                    <a href="#private-{{id}}">
                         <div class="box-section-library">
                             <img src="/uploads/{{image}}" alt="No image" class="img-responsive-library">
                             <div class="bottom-left-library">
@@ -36,15 +41,31 @@
                     </a>
                 {{/each}}
             </div>
-            
-            <div id="modal1" class="overlay">
-                <a class="cancel" href="#"></a>
-                <div class="customModal">
-                    <h2>This is Modal Overlay 1</h2>
-                    <div class="content">
-                        <p>Click outside the modal to close.</p>
+            <div>
+                {{#each publicPlaylists}}
+                    <div id="public-{{id}}" class="overlay">
+                        <a class="cancel" href="#"></a>
+                        <div class="customModal">
+                            <h2>This is Modal Overlay {{id}} </h2>
+                            <a class="close" href="#">×</a>
+                            <div class="content">
+                                <p>Click outside the modal to close.</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                {{/each}}
+                {{#each privatePlaylists}}
+                    <div id="private-{{id}}" class="overlay">
+                        <a class="cancel" href="#"></a>
+                        <div class="customModal">
+                            <h2>This is Modal Overlay {{id}} </h2>
+                            <a class="close" href="#">×</a>
+                            <div class="content">
+                                <p>Click outside the modal to close.</p>
+                            </div>
+                        </div>
+                    </div>
+                {{/each}}
             </div>
             <br>
             <p style="color: red;">{{errors}}</p>

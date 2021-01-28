@@ -77,3 +77,19 @@ exports.getAllPlaylistsByUsername = function(userId, callback) {
         callback(error, playlist)
     })
 }
+
+exports.getAllUsers = function(callback) {
+    const query = "SELECT username, email FROM User"
+
+    db.all(query, function(error, users) {
+        callback(error, users)
+    })
+}
+
+exports.getAllPublicPlaylists = function(callback) {
+    const query = "SELECT title, image FROM Playlist WHERE private = ?"
+    
+    db.all(query, [0], function(error, publicPlaylists) {
+        callback(error, publicPlaylists)
+    })
+}

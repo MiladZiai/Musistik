@@ -1,3 +1,15 @@
 <div class="contact1">
-    
+    <div class="section-discover">
+        <p style="color: red;">{{errors}}</p>
+        <div id="users-grid" >
+            {{#each users}}
+                <div class="tile" style="border-style: solid;">
+                    <div class="tile-content">
+                        <p class="tile-title">{{username}}</p>
+                        <p class="tile-subtitle">{{email}}</p>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    </div>
 </div>

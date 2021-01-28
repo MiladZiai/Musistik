@@ -80,30 +80,23 @@ section.sign {
 
 /******************* Discover grid ******************/
 #grid{
-    max-width: 1200px;
-    max-height: 250px;
     margin: 0 auto;
     display: grid;
     grid-gap: 1rem;
 }
-@media (min-width: 600px) {
+@media (min-width: 768px) {
     #grid { grid-template-columns: repeat(2, 1fr); }
 }
-@media (min-width: 600px) {
+@media (min-width: 992px) {
     #grid { grid-template-columns: repeat(3, 1fr); }
-}
-.img-container{
-    position: relative;
-    text-align: center;
-    color: white;
-    object-fit: cover;
 }
 .bottom-left {
     position: absolute;
     bottom: 0px;
     color: white;
     width: 100%;
-    text-overflow: ellipsis;
+    text-align: center;
+    overflow-wrap: break-word;
     border-radius: 3vh;
     background-color: rgba(0, 0, 0, 0.5);
     height: 80px;
@@ -111,6 +104,7 @@ section.sign {
 .box{
     position: relative;
     min-width: 280px;
+    object-fit: cover;
 }
 .box:hover{
     opacity: 0.5;
@@ -121,12 +115,14 @@ section.sign {
 }
 .img-responsive {
     border-radius: 3vh;
+    min-height: 300px;
+    max-height: 300px;
+    width: 100%;
+    
 }
 .section-discover{
-    margin: 2rem 3rem 4rem 3rem;
+    margin: 2rem 3rem;
     border-radius: 3vh;
-    padding: 3rem;
-    overflow-y: scroll;
 }
 
 /******************* Library Scrolling Container ******************/
@@ -185,7 +181,8 @@ section.sign {
     margin:5px;
 }
 
-/* **************** MODAL ****************/
+/******************* Library playlist modal ******************/
+
 .customModal {
     margin: 100px auto;
     padding: 20px;
@@ -193,7 +190,7 @@ section.sign {
     border: 1px solid #666;
     width: 60vw;
     height: 40vw;
-    border-radius: 6px;
+    border-radius: 2vh;
     box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
     position: relative;
     overflow-y: scroll;
@@ -216,9 +213,26 @@ section.sign {
     max-height: 400px;
     overflow: auto;
 }
+.customModal h2 {
+    margin-top: 1rem;
+    text-align: center;
+}
 .customModal p {
     margin: 0 0 1em;
     text-align: center;
+}
+.customModal .close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    transition: all 200ms;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #333;
+}
+.customModal .close:hover {
+    color: #5755d9;
 }
 .customModal p:last-child { margin: 0; }
 .overlay {
@@ -241,4 +255,31 @@ section.sign {
 .overlay:target {
     visibility: visible;
     opacity: 1;
+}
+
+/******************* Users ******************/
+
+.tile-content {
+    margin: 0.5rem 0.5rem 0.5rem 0.5rem; 
+    min-width: 150px !important;
+    min-height: 70px !important;
+    text-align: center;
+}
+.tile {
+    background-color: whitesmoke;
+    border-radius: 3vh;
+}
+
+#users-grid{
+    max-width: 1400px;
+    max-height: 250px;
+    margin: 0 auto;
+    display: grid;
+    grid-gap: 1rem;
+}
+@media (min-width: 600px) {
+    #users-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 600px) {
+    #users-grid { grid-template-columns: repeat(4, 1fr); }
 }
