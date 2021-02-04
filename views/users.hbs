@@ -3,13 +3,33 @@
         <p style="color: red;">{{errors}}</p>
         <div id="users-grid" >
             {{#each users}}
-                <div class="tile" style="border-style: solid;">
-                    <div class="tile-content">
-                        <p class="tile-title">{{username}}</p>
-                        <p class="tile-subtitle">{{email}}</p>
+                <a href="#users-{{username}}" style="border-radius: 3vh;">
+                    <div class="tile" style="border-style: solid;">
+                        <div class="tile-content">
+                            <p class="tile-title">{{username}}</p>
+                            <p class="tile-subtitle">{{email}}</p>
+                        </div>
+                    </div>
+                </a>
+                <div id="users-{{username}}" class="overlay">
+                    <a class="cancel" href="#"></a>
+                    <div class="customModal">
+                        <h2>{{username}}'s playlists!</h2>
+                        <a class="close" href="#">×</a>
+                        <div id="users-grid">
+                            {{#each playlists}}
+                                <div class="box-section-library">
+                                    <img src="/uploads/{{image}}"  alt="No image" class="img-responsive-library">
+                                    <div class="bottom-left-library">
+                                        <h2>{{title}}</h2>
+                                    </div>
+                                </div>
+                            {{/each}}
+                        </div>
                     </div>
                 </div>
             {{/each}}
         </div>
+                
     </div>
 </div>

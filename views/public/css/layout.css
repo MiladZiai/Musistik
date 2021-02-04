@@ -143,6 +143,7 @@ section.sign {
     border-radius: 3vh;
 }
 .box-section-library{
+    position: relative;
     border-radius: 3vh;
     width: 240px;
     height: 240px;
@@ -278,10 +279,13 @@ section.sign {
     display: grid;
     grid-gap: 1rem;
 }
-@media (min-width: 600px) {
+@media (min-width: 592px) {
+    #users-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 768px) {
     #users-grid { grid-template-columns: repeat(3, 1fr); }
 }
-@media (min-width: 600px) {
+@media (min-width: 992px) {
     #users-grid { grid-template-columns: repeat(4, 1fr); }
 }
 

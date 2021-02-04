@@ -5,10 +5,10 @@ const multer = require('multer')
 const db = require('/Users/miladziai/Documents/skolan/Musistik/db')
 
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'views/public/uploads')
+    destination: (req, file, callback) => {
+        callback(null, 'views/public/uploads')
     },
-    filename:function(req,file, callback)   {
+    filename: (req, file, callback) =>  {
         callback(null, req.session.userId + "-" + file.fieldname + '-' + Date.now() + path.extname(file.originalname)); 
     }
 })
@@ -50,7 +50,7 @@ router.get('/', (req, res) => {
                             delete playlist.releaseDate;
                         }
                     }
-                    playlists.splice(currentIndex, duplicates)
+                    playlists.splice(currentIndex, duplicates-1)
 
                     return playlist
                 })
@@ -83,8 +83,18 @@ router.post('/createPlaylist', upload.single('playlistImage'), (req, res) => {
     if(isLoggedIn) {
         const title = req.body.playlistTitle
         let private = req.body.private
-        const playlistImage = req.file.filename
+        const playlistImage = req.file.filename 
         const userId = req.session.userId
+
+        if(!title){
+            errors.push("please select a title for the playlist!")
+            res.render("createPlaylist.hbs", {errors})
+        }
+
+        if(typeof playlistImage === undefined){
+            errors.push("please select an image for the playlist!")
+            res.render("createPlaylist.hbs", {errors})
+        }
         
         if(typeof private === "undefined")
             private = 0
@@ -113,7 +123,6 @@ router.post('/createPlaylist', upload.single('playlistImage'), (req, res) => {
     }
 })
 
-
 router.get('/addSong', (req, res) => {
     const playlistId = req.query.id
     if(!req.session.isLoggedIn)
@@ -132,7 +141,6 @@ router.post('/addSong', (req, res) => {
         const artist = req.body.artist
         const genre = req.body.genre
         const playlistId = req.body.playlistId
-        console.log(playlistId + " playlistId");
         
         const model = {
             title: title,

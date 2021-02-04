@@ -73,7 +73,7 @@
                                                     <input type="hidden" name="songId" value="{{songId}}">
                                                     <td>
                                                         {{#if songId}}
-                                                            <button type="submit" class="fas fa-trash"></button>
+                                                            <button type="submit"><a class="icon icon-delete"></a></button>
                                                         {{/if}}
                                                     </td>
                                                 </form>
@@ -89,10 +89,41 @@
                     <div id="private-{{id}}" class="overlay">
                         <a class="cancel" href="#"></a>
                         <div class="customModal">
-                            <h2>This is Modal Overlay {{id}} </h2>
+                            <h2>{{title}}</h2>
                             <a class="close" href="#">×</a>
-                            <div class="content">
-                                <p>Click outside the modal to close.</p>
+                            <a href="/library/addSong?id={{id}}"
+                                style="border-radius: 3vh; " 
+                                class="btn">Add song</a>
+                            <div class="songs-in-playlists">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Title</th>
+                                            <th>Artist</th>
+                                            <th class="align-center">Genre</th>
+                                            <th class="align-right">Release Date</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each songs}}
+                                            <tr class="active">
+                                                <td>{{songTitle}}</td>
+                                                <td>{{artistName}}</td>
+                                                <td>{{genre}}</td>
+                                                <td class="align-right">{{releaseDate}}</td>
+                                                <form action="/library/deleteSongInPlaylist" method="POST">
+                                                    <input type="hidden" name="songId" value="{{songId}}">
+                                                    <td>
+                                                        {{#if songId}}
+                                                            <button type="submit"><a class="icon icon-delete"></a></button>
+                                                        {{/if}}
+                                                    </td>
+                                                </form>
+                                            </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

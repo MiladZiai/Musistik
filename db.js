@@ -92,7 +92,12 @@ exports.getAllPlaylistsById = function(userId, callback) {
 }
 
 exports.getAllUsers = function(callback) {
-    const query = "SELECT username, email FROM User"
+    const query = `
+                    SELECT u.id, u.username, u.email, p.title, p.image FROM User as u
+                    LEFT OUTER JOIN Playlist as p
+                    ON u.id = p.playlistOwner AND p.private = 0
+                    ORDER BY u.id
+                `
 
     db.all(query, function(error, users) {
         callback(error, users)
@@ -100,7 +105,7 @@ exports.getAllUsers = function(callback) {
 }
 
 exports.getAllPublicPlaylists = function(callback) {
-    const query = "SELECT title, image FROM Playlist WHERE private = ?"
+    const query = "SELECT * FROM Playlist WHERE private = ?"
     
     db.all(query, [0], function(error, publicPlaylists) {
         callback(error, publicPlaylists)
@@ -142,7 +147,6 @@ exports.deleteSongInPlaylist = function(songId, callback) {
 exports.deleteSongFromSongsInPlaylist = function(songId, callback) {
     const query = "DELETE FROM SongsInPlaylist WHERE songId = ?"
     db.run(query, [songId], function(error){
-        console.log('error: ', error)
         callback(error)
     })
 }
