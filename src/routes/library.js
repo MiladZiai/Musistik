@@ -22,14 +22,41 @@ router.get('/', (req, res) => {
     var publicPlaylists = []
 
     if(isLoggedIn) {
-        db.getAllPlaylistsByUsername(userId, function(error, playlist) {
+        db.getAllPlaylistsById(userId, function(error, playlists) {
             if(error) {
                 errors.push("Error occured when loading playlists, please try again later")
                 res.render("library.hbs", {errors: errors})
             } else {
 
-                privatePlaylists = playlist.filter(playlist => playlist.private == 1)
-                publicPlaylists = playlist.filter(playlist => playlist.private == 0)
+                playlists = playlists.filter((playlist) => {
+                    playlist.songs = []
+                    const duplicates = playlists.filter(innerPlaylist => innerPlaylist.id === playlist.id).length
+                    const currentIndex = playlists.findIndex((foundPlaylist) => foundPlaylist && foundPlaylist.id === playlist.id)
+
+                    for(let i = currentIndex; i < currentIndex + duplicates; i++) {
+                        playlist.songs.push({
+                            songId: playlists[i].songId, 
+                            songTitle: playlists[i].songTitle, 
+                            artistName: playlists[i].artistName,
+                            genre: playlists[i].genre, 
+                            releaseDate: playlists[i].releaseDate
+                        })
+                        
+                        if(i === currentIndex) {
+                            delete playlist.songId;
+                            delete playlist.songTitle;
+                            delete playlist.artistName;
+                            delete playlist.genre;
+                            delete playlist.releaseDate;
+                        }
+                    }
+                    playlists.splice(currentIndex, duplicates)
+
+                    return playlist
+                })
+                
+                privatePlaylists = playlists.filter(playlist => playlist.private == 1)
+                publicPlaylists = playlists.filter(playlist => playlist.private == 0)
 
                 const model = {
                     privatePlaylists: privatePlaylists,
@@ -86,6 +113,78 @@ router.post('/createPlaylist', upload.single('playlistImage'), (req, res) => {
     }
 })
 
+
+router.get('/addSong', (req, res) => {
+    const playlistId = req.query.id
+    if(!req.session.isLoggedIn)
+        res.redirect('/signIn')
+    else{
+        res.render("addSong.hbs", {isLoggedIn: req.session.isLoggedIn, playlistId: playlistId})
+    }
+        
+})
+router.post('/addSong', (req, res) => {
+
+    const isLoggedIn = req.session.isLoggedIn
+    errors = []
+    if(isLoggedIn) {
+        const title = req.body.title
+        const artist = req.body.artist
+        const genre = req.body.genre
+        const playlistId = req.body.playlistId
+        console.log(playlistId + " playlistId");
+        
+        const model = {
+            title: title,
+            artist: artist,
+            genre: genre
+        }
+        db.addSong(model, function(error) {
+            if(error) {
+                errors.push("Error occured when creating song, please try again later!")
+                res.render("addSong.hbs", {errors: errors})
+            } else {
+                db.getSongId(function(error, songId){
+                    if(error){
+                        errors.push("Database error, please try again later!")
+                        res.render("addSong.hbs", {errors: errors})
+                    } else {
+                        db.addSongInPlaylist(playlistId, songId.id , function(error){
+                            if(error) {
+                                errors.push("Error occured when adding song to playlist!")
+                                res.render("addSong.hbs", {errors: errors})
+                            }
+                        })
+                    }
+                })
+                res.redirect("/library")
+            }
+        })
+    } else {
+        errors.push("Please sign in!")
+        res.render("addSong.hbs", {errors: errors})
+    }
+})
+
+router.post('/deleteSongInPlaylist', (req, res) => {
+    const songId = req.body.songId
+    const errors = []
+    db.deleteSongInPlaylist(songId, function(error){
+        if(error){
+            errors.push("Error occured when deleting song!")
+            res.render("library.hbs", {errors: errors})
+        } else {
+            db.deleteSongFromSongsInPlaylist(songId, function(error){
+                if(error){
+                    errors.push("Error occured when deleting song!")
+                    res.render("library.hbs", {errors: errors})
+                } else {
+                    res.redirect("/library")
+                }
+            })
+        }
+    })
+})
 
 
 module.exports = router

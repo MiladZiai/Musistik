@@ -1,4 +1,5 @@
-const sqlite3 = require('sqlite3')
+const sqlite3 = require('sqlite3');
+const { query } = require('express');
 
 let db = new sqlite3.Database('./musistik.db', (err) => {
     if (err) {
@@ -29,7 +30,9 @@ db.run(`
     CREATE TABLE IF NOT EXISTS Song (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT,
-        artistName VARCHAR(26)
+        artistName VARCHAR(26),
+        genre TEXT, 
+        releaseDate DATE
     )
 `)
 db.run(`
@@ -40,6 +43,7 @@ db.run(`
         FOREIGN KEY(songId) REFERENCES Song(id)
     )
 `)
+
 
 
 exports.createUserAccount = function(username, email, password, callback) {
@@ -68,13 +72,22 @@ exports.createPlaylist = function(model, callback) {
     })
 }
 
-exports.getAllPlaylistsByUsername = function(userId, callback) {
-    const query = `SELECT * 
-                    FROM Playlist
-                    WHERE playlistOwner = ?`
-    
-    db.all(query, [userId], function(error, playlist) {
-        callback(error, playlist)
+exports.getAllPlaylistsById = function(userId, callback) {
+    const query = `
+                SELECT p.id, p.title, p.image, p.private, p.playlistOwner,
+                sp.playlistId, sp.songId, 
+                s.title as songTitle, s.artistName, s.genre, s.releaseDate
+                FROM Playlist as p
+                LEFT JOIN SongsInPlaylist as sp 
+                ON p.id = sp.playlistId
+                LEFT JOIN Song as s 
+                ON sp.songId = s.id
+                WHERE p.playlistOwner = ?
+                ORDER BY p.id
+                `
+
+    db.all(query, [userId], function(error, playlists) {
+        callback(error, playlists)
     })
 }
 
@@ -91,5 +104,45 @@ exports.getAllPublicPlaylists = function(callback) {
     
     db.all(query, [0], function(error, publicPlaylists) {
         callback(error, publicPlaylists)
+    })
+}
+
+exports.addSong = function(model, callback) {
+    const query = "INSERT INTO Song (title, artistName, genre, releaseDate) VALUES(?,?,?, date('now', 'localtime'))"
+    const values = [model.title, model.artist, model.genre]
+
+    db.run(query, values, function(error){
+        callback(error)
+    })
+}
+
+exports.getSongId = function(callback) {
+    const query = 'SELECT id FROM Song ORDER BY id DESC LIMIT 1'
+    db.all(query, function(error, songId){
+        callback(error, songId[0])
+    })
+}
+
+exports.addSongInPlaylist = function(playlistId, songId, callback) {
+    const query = "INSERT INTO SongsInPlaylist (playlistId, songId) VALUES(?, ?)"
+    const values = [playlistId, songId]
+
+    db.run(query, values, function(error){
+        callback(error)
+    })
+}
+
+exports.deleteSongInPlaylist = function(songId, callback) {
+    const query = "DELETE FROM Song WHERE id = ?"
+    db.run(query, [songId], function(error){
+        callback(error)
+    })
+}
+
+exports.deleteSongFromSongsInPlaylist = function(songId, callback) {
+    const query = "DELETE FROM SongsInPlaylist WHERE songId = ?"
+    db.run(query, [songId], function(error){
+        console.log('error: ', error)
+        callback(error)
     })
 }

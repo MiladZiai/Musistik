@@ -133,12 +133,6 @@ iframe {
   min-height: 100%;
   padding: 15px;
 
-  background: #5755d9;
-  background: -webkit-linear-gradient(left, #5755d9, #0084ff);
-  background: -o-linear-gradient(left, #5755d9, #0084ff);
-  background: -moz-linear-gradient(left, #5755d9, #0084ff);
-  background: linear-gradient(left, #5755d9, #0084ff);
-
   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-box;

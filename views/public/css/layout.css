@@ -1,3 +1,6 @@
+body{
+    background: -webkit-linear-gradient(left, #5755d9, #0084ff)!important;
+}
 
 /******************* headerBAR ******************/
 header.headerbar {
@@ -16,6 +19,7 @@ header.headerbar {
 header, .navbar {
     z-index: 100;
     width: 100%;
+    background: white;
 }
 section.logo img{
     margin-left: 50px;
@@ -155,7 +159,7 @@ section.sign {
     border-radius: 3vh;
 }
 .playlist-title-library {
-    margin-top: 2rem;
+    margin-top: 8vh;
     color: white;
     text-align: center;
 }
@@ -184,16 +188,16 @@ section.sign {
 /******************* Library playlist modal ******************/
 
 .customModal {
-    margin: 100px auto;
-    padding: 20px;
+    margin: 100px 2rem;
+    padding: 10px;
     background: #fff;
     border: 1px solid #666;
-    width: 60vw;
-    height: 40vw;
     border-radius: 2vh;
     box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
     position: relative;
+    height: 80vh;
     overflow-y: scroll;
+    
 }
 .customModal .close {
     position: absolute;
@@ -209,10 +213,6 @@ section.sign {
     color: #777;
 }
 .customModal .close:hover { opacity: 1; }
-.customModal .content {
-    max-height: 400px;
-    overflow: auto;
-}
 .customModal h2 {
     margin-top: 1rem;
     text-align: center;
@@ -236,9 +236,9 @@ section.sign {
 }
 .customModal p:last-child { margin: 0; }
 .overlay {
-    position: absolute;
+    position: fixed;
     top: 0;
-    bottom: 0;
+    height: 100%;
     left: 0;
     right: 0;
     background: rgba(0, 0, 0, 0.5);
@@ -256,6 +256,7 @@ section.sign {
     visibility: visible;
     opacity: 1;
 }
+
 
 /******************* Users ******************/
 
@@ -282,4 +283,27 @@ section.sign {
 }
 @media (min-width: 600px) {
     #users-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+.align-right {
+    text-align: right;
+    
+}
+.align-top{
+    margin: 25vh auto;
+    position: absolute;
+    color: white;
+    font-size: 5vh;
+    text-align: center;
+    font-weight: 150;
+    font-family: Montserrat-Regular;
+}
+.align-bottom {
+    color: white;
+    margin: 31vh auto;
+    position: absolute;
+    font-size: 8vh;
+    text-align: center;
+    font-weight: 200;
+    font-family: Montserrat-Regular;
 }

@@ -12,10 +12,10 @@ router.post('/', (req, res) => {
     const password = req.body.password
     const errors = []
 
-    if(errors.length < 1) {
+    if(username.length > 1) {
         db.signIn(username, function(error, user) {
             if(typeof user === "undefined") {
-                errors.push("Wrong Username and/or Password 1")
+                errors.push("Wrong Username and/or Password!")
                 res.render("signIn.hbs", {errors: errors})
             } else if(error){
                 errors.push("Error signing in, please try again later!")
@@ -35,6 +35,9 @@ router.post('/', (req, res) => {
                 })
             }
         })
+    } else {
+        errors.push("Wrong Username and/or Password!")
+        res.render("signIn.hbs", {errors: errors})
     }
 })
 
