@@ -174,6 +174,78 @@ router.post('/addSong', (req, res) => {
     }
 })
 
+router.post('/deletePlaylist', (req, res) => {
+    const playlistId = req.query.id
+    const isLoggedIn = req.session.isLoggedIn
+    const userId = req.session.userId
+    const errors = []
+    var privatePlaylists = []
+    var publicPlaylists = []
+    if(isLoggedIn) {
+        db.deletePlaylistFromSongsInPlaylist(playlistId, function(error){
+            if(error) {
+                errors.push("Error occured when deleting playlist! please try again later")
+                res.render("library.hbs", {errors: errors, isLoggedIn})
+            } else {
+                db.deletePlaylistInPlaylist(playlistId, function(error) {
+                    if(error) {
+                        errors.push("Error occured when deleting playlist! please try again later")
+                        res.render("library.hbs", {errors: errors, isLoggedIn})
+                    } else {
+                        db.getAllPlaylistsById(userId, function(error, playlists) {
+                            if(error) {
+                                errors.push("Error occured when loading playlists, please try again later")
+                                res.render("library.hbs", {errors: errors})
+                            } else {
+                
+                                playlists = playlists.filter((playlist) => {
+                                    playlist.songs = []
+                                    const duplicates = playlists.filter(innerPlaylist => innerPlaylist.id === playlist.id).length
+                                    const currentIndex = playlists.findIndex((foundPlaylist) => foundPlaylist && foundPlaylist.id === playlist.id)
+                
+                                    for(let i = currentIndex; i < currentIndex + duplicates; i++) {
+                                        playlist.songs.push({
+                                            songId: playlists[i].songId, 
+                                            songTitle: playlists[i].songTitle, 
+                                            artistName: playlists[i].artistName,
+                                            genre: playlists[i].genre, 
+                                            releaseDate: playlists[i].releaseDate
+                                        })
+                                        
+                                        if(i === currentIndex) {
+                                            delete playlist.songId;
+                                            delete playlist.songTitle;
+                                            delete playlist.artistName;
+                                            delete playlist.genre;
+                                            delete playlist.releaseDate;
+                                        }
+                                    }
+                                    playlists.splice(currentIndex, duplicates-1)
+                
+                                    return playlist
+                                })
+                                
+                                privatePlaylists = playlists.filter(playlist => playlist.private == 1)
+                                publicPlaylists = playlists.filter(playlist => playlist.private == 0)
+                
+                                const model = {
+                                    privatePlaylists: privatePlaylists,
+                                    publicPlaylists: publicPlaylists,
+                                    isLoggedIn: isLoggedIn
+                                }
+                
+                                res.render("library.hbs", model)
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    } else {
+        res.redirect('/signIn')
+    }
+})
+
 router.post('/deleteSongInPlaylist', (req, res) => {
     const songId = req.body.songId
     const errors = []

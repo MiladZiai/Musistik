@@ -1,10 +1,10 @@
 <div class="contact1">
-    <div class="section-discover">
+    <div class="section-discover" > 
         <p style="color: red;">{{errors}}</p>
         <div id="users-grid" >
             {{#each users}}
-                <a href="#users-{{username}}" style="border-radius: 3vh;">
-                    <div class="tile" style="border-style: solid;">
+                <a href="#users-{{username}}">
+                    <div class="tile" >
                         <div class="tile-content">
                             <p class="tile-title">{{username}}</p>
                             <p class="tile-subtitle">{{email}}</p>
@@ -18,12 +18,14 @@
                         <a class="close" href="#">×</a>
                         <div id="users-grid">
                             {{#each playlists}}
-                                <div class="box-section-library">
-                                    <img src="/uploads/{{image}}"  alt="No image" class="img-responsive-library">
-                                    <div class="bottom-left-library">
-                                        <h2>{{title}}</h2>
+                                <a href="/users/detailviewSongs/{{playlistId}}">
+                                    <div class="box-section-library">
+                                        <img src="/uploads/{{image}}"  alt="No image" class="img-responsive-library">
+                                        <div class="bottom-left-library">
+                                            <h2>{{title}}</h2>
+                                        </div>
                                     </div>
-                                </div>
+                                </a>
                             {{/each}}
                         </div>
                     </div>

@@ -93,20 +93,29 @@ exports.getAllPlaylistsById = function(userId, callback) {
 
 exports.getAllUsers = function(callback) {
     const query = `
-                    SELECT u.id, u.username, u.email, p.title, p.image FROM User as u
-                    LEFT OUTER JOIN Playlist as p
+                    SELECT u.id, u.username, u.email, p.title, p.image, p.id as playlistId FROM User as u
+                    LEFT JOIN Playlist as p
                     ON u.id = p.playlistOwner AND p.private = 0
                     ORDER BY u.id
                 `
-
     db.all(query, function(error, users) {
         callback(error, users)
     })
 }
 
 exports.getAllPublicPlaylists = function(callback) {
-    const query = "SELECT * FROM Playlist WHERE private = ?"
-    
+    const query = `
+                    SELECT p.id, p.title, p.image, p.private, p.playlistOwner,
+                    sp.playlistId, sp.songId, 
+                    s.title as songTitle, s.artistName, s.genre, s.releaseDate
+                    FROM Playlist as p
+                    LEFT JOIN SongsInPlaylist as sp 
+                    ON p.id = sp.playlistId
+                    LEFT JOIN Song as s 
+                    ON sp.songId = s.id
+                    WHERE p.private = ?
+                    ORDER BY p.id
+                `
     db.all(query, [0], function(error, publicPlaylists) {
         callback(error, publicPlaylists)
     })
@@ -147,6 +156,36 @@ exports.deleteSongInPlaylist = function(songId, callback) {
 exports.deleteSongFromSongsInPlaylist = function(songId, callback) {
     const query = "DELETE FROM SongsInPlaylist WHERE songId = ?"
     db.run(query, [songId], function(error){
+        callback(error)
+    })
+}
+
+exports.getSongsInPlaylistById = function(playlistId, callback) {
+    const query = `
+                    SELECT sp.playlistId, sp.songId, 
+                    s.title as songTitle, s.artistName, s.genre, s.releaseDate
+                    FROM Playlist as p
+                    LEFT JOIN SongsInPlaylist as sp 
+                    ON p.id = sp.playlistId
+                    LEFT JOIN Song as s 
+                    ON sp.songId = s.id
+                    WHERE p.id = ?
+                `
+    db.all(query, [playlistId], function(error, songs) {
+        callback(error, songs)
+    })
+}
+
+exports.deletePlaylistFromSongsInPlaylist = function(playlistId, callback) {
+    const query = "DELETE FROM SongsInPlaylist WHERE SongsInPlaylist.playlistId = ?"
+    db.run(query, [playlistId], function(error) {
+        callback(error)
+    })
+}
+
+exports.deletePlaylistInPlaylist = function(playlistId, callback) {
+    const query = "DELETE FROM Playlist WHERE Playlist.id = ?"
+    db.run(query, [playlistId], function(error) {
         callback(error)
     })
 }

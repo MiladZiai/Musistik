@@ -4,11 +4,42 @@
         <div id="grid" >
         <!-- for each playlist in db -->
         {{#each publicPlaylists}}
-            <div class="box">
-                <img src="/uploads/{{image}}" alt="test" class="img-responsive">
-                <div class="bottom-left">
-                    <h2>{{title}}</h2>
+            <a href="#public-{{id}}" style="border-radius: 3vh;">
+                <div class="box">
+                    <img src="/uploads/{{image}}" alt="test" class="img-responsive">
+                    <div class="bottom-left">
+                        <h2>{{title}}</h2>
+                    </div>
                 </div>
+            </a>
+            <div id="public-{{id}}" class="overlay" style="z-index: 1;">
+                    <a class="cancel" href="#"></a>
+                    <div class="customModal">
+                        <h2>{{title}}</h2>
+                        <a class="close" href="#">×</a>
+                        <div class="songs-in-playlists">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Title</th>
+                                            <th>Artist</th>
+                                            <th class="align-center">Genre</th>
+                                            <th class="align-right">Release Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each songs}}
+                                            <tr class="active">
+                                                <td>{{songTitle}}</td>
+                                                <td>{{artistName}}</td>
+                                                <td>{{genre}}</td>
+                                                <td class="align-right">{{releaseDate}}</td>
+                                            </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            </div>
+                    </div>
             </div>
         {{/each}}
         </div>

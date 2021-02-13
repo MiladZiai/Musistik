@@ -15,22 +15,38 @@ router.get('/', (req, res) => {
                 const currentIndex = users.findIndex((foundUser) => foundUser && foundUser.id === user.id)
 
                 for(let i = currentIndex; i < currentIndex + duplicates; i++) {
-                    if(users[i].title && users[i].image)
+                    if(users[i].title && users[i].image && users[i].playlistId)
                         user.playlists.push({
                             title: users[i].title, 
-                            image: users[i].image
+                            image: users[i].image,
+                            playlistId: users[i].playlistId
                         })
                     
                     if(i === currentIndex) {
                         delete user.title;
                         delete user.image;
+                        delete user.playlistId;
                     }
                 }
                 users.splice(currentIndex, duplicates-1)
-
+                
                 return user
             })
             res.render("users.hbs", {users, isLoggedIn: req.session.isLoggedIn})
+        }
+    })
+})
+
+router.get('/detailviewSongs/:id', (req, res) => {
+    const isLoggedIn = req.session.isLoggedIn
+    const playlistId = req.params.id
+    errors = []
+    db.getSongsInPlaylistById(playlistId, function(error, songs) {
+        if(error) {
+            errors.push("Error occured when loading songs, please try again later!")
+            res.render("detailviewSongs.hbs", {errors: errors, isLoggedIn})
+        } else {
+            res.render("detailviewSongs.hbs", {isLoggedIn, songs: songs})
         }
     })
 })

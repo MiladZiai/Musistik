@@ -9,6 +9,8 @@
                     Create Playlist
                 </a>
             </div>
+            <br>
+            <p style="color: red;">{{errors}}</p>
 
             <div class="playlist-title-library">
                 <h2 style="font-family: Montserrat-Regular;">Your public playlists</h2>
@@ -48,9 +50,11 @@
                         <div class="customModal">
                             <h2>{{title}}</h2>
                             <a class="close" href="#">×</a>
-                            <a href="/library/addSong?id={{id}}"
-                                style="border-radius: 3vh; " 
-                                class="btn">Add song</a>
+                            
+                            <form action="/library/deletePlaylist?id={{id}}" method="POST" >
+                                <a href="/library/addSong?id={{id}}" style="border-radius: 3vh; " class="btn">Add song</a>
+                                <button type="submit" style="border-radius: 3vh;" class="btn">Delete playlist</button>
+                            </form>
                             <div class="songs-in-playlists">
                                 <table class="table">
                                     <thead>
@@ -91,9 +95,10 @@
                         <div class="customModal">
                             <h2>{{title}}</h2>
                             <a class="close" href="#">×</a>
-                            <a href="/library/addSong?id={{id}}"
-                                style="border-radius: 3vh; " 
-                                class="btn">Add song</a>
+                            <form action="/library/deletePlaylist?id={{id}}" method="POST" >
+                                <a href="/library/addSong?id={{id}}" style="border-radius: 3vh; " class="btn">Add song</a>
+                                <button type="submit" style="border-radius: 3vh;" class="btn">Delete playlist</button>
+                            </form>
                             <div class="songs-in-playlists">
                                 <table class="table">
                                     <thead>
@@ -129,8 +134,6 @@
                     </div>
                 {{/each}}
             </div>
-            <br>
-            <p style="color: red;">{{errors}}</p>
         {{/if}}
         
     </div>
