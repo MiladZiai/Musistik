@@ -2,7 +2,7 @@
     <div class="wrapper">
         {{#if isLoggedIn}}
             <div class="create-playlist-btn">
-                <a href="/library/createPlaylist" 
+                <a href="/library/createPlaylist/{{userId}}" 
                     class="btn" 
                     style="border-radius: 3vh; margin-left: 6rem"
                 >
@@ -11,7 +11,7 @@
             </div>
             <br>
             <p style="color: red;">{{errors}}</p>
-
+            
             <div class="playlist-title-library">
                 <h2 style="font-family: Montserrat-Regular;">Your public playlists</h2>
             </div>

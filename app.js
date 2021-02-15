@@ -5,14 +5,16 @@ const path = require('path')
 const session = require('express-session')
 
 
-//routes
+//routers
 const discover = require("./src/routes/discover")
 const library = require("./src/routes/library")
 const signIn = require("./src/routes/signIn")
 const signUp = require("./src/routes/signUp")
 const users = require("./src/routes/users")
 const signOut = require("./src/routes/signOut")
-
+//API-router
+const signInAPI = require("./src/API-router/signInAPI")
+const libraryAPI = require("./src/API-router/libraryAPI")
 
 const app = express()
 
@@ -44,13 +46,16 @@ app.get('/contact', (req, res) => {
   res.render("contact.hbs", {isLoggedIn: req.session.isLoggedIn})
 })
 
-
+//Attach all routers
 app.use("/discover", discover)
 app.use("/library", library)
 app.use("/signIn", signIn)
 app.use("/signUp", signUp)
 app.use("/users", users)
 app.use("/signOut", signOut)
+//attach API routers
+app.use("/login", signInAPI)
+app.use("/playlist", libraryAPI)
 
 app.listen(8080, () => {
   console.log("##### Web app listening on port: 8080 #####")

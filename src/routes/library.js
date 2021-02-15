@@ -27,7 +27,7 @@ router.get('/', (req, res) => {
                 errors.push("Error occured when loading playlists, please try again later")
                 res.render("library.hbs", {errors: errors})
             } else {
-
+                
                 playlists = playlists.filter((playlist) => {
                     playlist.songs = []
                     const duplicates = playlists.filter(innerPlaylist => innerPlaylist.id === playlist.id).length
@@ -61,7 +61,8 @@ router.get('/', (req, res) => {
                 const model = {
                     privatePlaylists: privatePlaylists,
                     publicPlaylists: publicPlaylists,
-                    isLoggedIn: isLoggedIn
+                    isLoggedIn: isLoggedIn,
+                    userId: userId
                 }
 
                 res.render("library.hbs", model)
@@ -71,11 +72,12 @@ router.get('/', (req, res) => {
         res.render("library.hbs", {isLoggedIn: req.session.isLoggedIn})
 })
 
-router.get('/createPlaylist', (req, res) => {
+router.get('/createPlaylist/:id', (req, res) => {
+    const userId = req.params.id
     if(!req.session.isLoggedIn)
         res.redirect('/signIn')
     else
-        res.render("createPlaylist.hbs", {isLoggedIn: req.session.isLoggedIn})
+        res.render("createPlaylist.hbs", {isLoggedIn: req.session.isLoggedIn, userId})
 })
 router.post('/createPlaylist', upload.single('playlistImage'), (req, res) => {
     const isLoggedIn = req.session.isLoggedIn
@@ -84,7 +86,8 @@ router.post('/createPlaylist', upload.single('playlistImage'), (req, res) => {
         const title = req.body.playlistTitle
         let private = req.body.private
         const playlistImage = req.file.filename 
-        const userId = req.session.userId
+        const userId = req.body.userId
+        
 
         if(!title){
             errors.push("please select a title for the playlist!")
@@ -130,7 +133,6 @@ router.get('/addSong', (req, res) => {
     else{
         res.render("addSong.hbs", {isLoggedIn: req.session.isLoggedIn, playlistId: playlistId})
     }
-        
 })
 router.post('/addSong', (req, res) => {
 
