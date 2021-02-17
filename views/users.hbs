@@ -1,6 +1,14 @@
 <div class="contact1">
     <div class="section-discover" > 
         <p style="color: red;">{{errors}}</p>
+        <section class="navbar-section" style="text-align: center; margin-bottom: 3vh;">
+            <form action="/users" method="GET">
+                <div class="input-group input-inline" style="z-index: none;">
+                    <input class="form-input" type="text" name="search" placeholder="search for users..">
+                    <button class="btn btn-primary input-group-btn" type="submit">Search</button>
+                </div>
+            </form>
+        </section>
         <div id="users-grid" >
             {{#each users}}
                 <a href="#users-{{username}}">

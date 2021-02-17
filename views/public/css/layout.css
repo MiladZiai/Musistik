@@ -198,7 +198,6 @@ section.sign {
     position: relative;
     height: 80vh;
     overflow-y: scroll;
-    
 }
 .customModal .close {
     position: absolute;
@@ -268,7 +267,6 @@ section.sign {
     background-color: whitesmoke;
     border-radius: 3vh;
 }
-
 #users-grid{
     max-width: 1000px;
     max-height: 250px;
@@ -285,7 +283,6 @@ section.sign {
 @media (min-width: 992px) {
     #users-grid { grid-template-columns: repeat(4, 1fr); }
 }
-
 .align-right {
     text-align: right;
     
@@ -308,7 +305,6 @@ section.sign {
     font-weight: 200;
     font-family: Montserrat-Regular;
 }
-
 .detailviewSongs {
     border-radius: 3vh;
     justify-content: center;
@@ -317,6 +313,11 @@ section.sign {
     padding: 3vh 4vh;
     background: white;
 }
+.input-group .input-group-btn {
+    z-index: 0 !important;
+}
+
+
 
 
 /******************* Contact ******************/

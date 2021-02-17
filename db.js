@@ -189,3 +189,10 @@ exports.deletePlaylistInPlaylist = function(playlistId, callback) {
         callback(error)
     })
 }
+
+exports.getSearchedUser = function(searchedUser, callback) {
+    const query = "SELECT * FROM User WHERE username like ? "
+    db.all(query, [searchedUser], function(error, users) {
+        callback(error, users)
+    })
+}
