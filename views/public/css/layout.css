@@ -129,8 +129,8 @@ section.sign {
     border-radius: 3vh;
 }
 
-/******************* Library Scrolling Container ******************/
 
+/******************* Library Scrolling Container ******************/
 .section-library{
     margin: 1rem 5rem 1rem 5rem;
     width: 80vw;
@@ -186,8 +186,8 @@ section.sign {
     margin:5px;
 }
 
-/******************* Library playlist modal ******************/
 
+/******************* Library playlist modal ******************/
 .customModal {
     margin: 100px 2rem;
     padding: 10px;
@@ -256,7 +256,6 @@ section.sign {
 
 
 /******************* Users ******************/
-
 .tile-content {
     margin: 0.5rem 0.5rem 0.5rem 0.5rem; 
     min-width: 150px !important;
@@ -318,8 +317,6 @@ section.sign {
 }
 
 
-
-
 /******************* Contact ******************/
 .contact {
     margin-right: 12px;
@@ -345,4 +342,9 @@ section.sign {
 .hometitle p{
     color:white;
     font-family: Montserrat-Regular;
+}
+
+.container.inside {
+    width: 700px;
+    text-align: left;
 }

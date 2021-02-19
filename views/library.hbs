@@ -8,6 +8,26 @@
                 >
                     Create Playlist
                 </a>
+                <div class="dropdown" style="float: right; margin-right:8vw;">
+                    <div class="btn-group">
+                        <a href="#" class="btn">
+                        Filter playlists
+                        </a>
+                        <a href="#" class="btn dropdown-toggle" tabindex="0">
+                            <i class="icon icon-caret"></i>
+                        </a>
+                        <!-- menu component -->
+                        <ul class="menu">
+                            <form action="/library/empty" method="GET">
+                                <button type="submit" style="color: #5755d9;"><li>empty playlists</li></button>
+                            </form>
+
+                            <form action="/library/nonEmpty" method="GET">
+                                <button type="submit" style="color: #5755d9;"><li>non empty playlists</li></button>
+                            </form>
+                        </ul>
+                    </div>
+                </div>
             </div>
             <br>
             <p style="color: red;">{{errors}}</p>

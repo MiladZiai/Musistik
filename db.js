@@ -74,18 +74,53 @@ exports.createPlaylist = function(model, callback) {
 
 exports.getAllPlaylistsById = function(userId, callback) {
     const query = `
-                SELECT p.id, p.title, p.image, p.private, p.playlistOwner,
-                sp.playlistId, sp.songId, 
-                s.title as songTitle, s.artistName, s.genre, s.releaseDate
-                FROM Playlist as p
-                LEFT JOIN SongsInPlaylist as sp 
-                ON p.id = sp.playlistId
-                LEFT JOIN Song as s 
-                ON sp.songId = s.id
-                WHERE p.playlistOwner = ?
-                ORDER BY p.id
+                    SELECT p.id, p.title, p.image, p.private, p.playlistOwner,
+                    sp.playlistId, sp.songId, 
+                    s.title as songTitle, s.artistName, s.genre, s.releaseDate
+                    FROM Playlist as p
+                    LEFT JOIN SongsInPlaylist as sp 
+                    ON p.id = sp.playlistId
+                    LEFT JOIN Song as s 
+                    ON sp.songId = s.id
+                    WHERE p.playlistOwner = ?
+                    ORDER BY p.id
                 `
 
+    db.all(query, [userId], function(error, playlists) {
+        callback(error, playlists)
+    })
+}
+exports.getEmptyPlaylists = function(userId, callback) {
+    const query = `
+                    SELECT p.id, p.title, p.image, p.private, p.playlistOwner,
+                    sp.playlistId, sp.songId, 
+                    s.title as songTitle, s.artistName, s.genre, s.releaseDate
+                    FROM Playlist as p
+                    LEFT JOIN SongsInPlaylist as sp 
+                    ON p.id = sp.playlistId
+                    LEFT JOIN Song as s 
+                    ON sp.songId = s.id
+                    WHERE p.playlistOwner = ? AND sp.songId IS NULL
+                    ORDER BY p.id
+                `
+    db.all(query, [userId], function(error, playlists) {
+        callback(error, playlists)
+    })
+}
+
+exports.getNonEmptyPlaylists = function(userId, callback) {
+    const query = `
+                    SELECT p.id, p.title, p.image, p.private, p.playlistOwner,
+                    sp.playlistId, sp.songId, 
+                    s.title as songTitle, s.artistName, s.genre, s.releaseDate
+                    FROM Playlist as p
+                    LEFT JOIN SongsInPlaylist as sp 
+                    ON p.id = sp.playlistId
+                    LEFT JOIN Song as s 
+                    ON sp.songId = s.id
+                    WHERE p.playlistOwner = ? AND sp.songId IS NOT NULL
+                    ORDER BY p.id
+                `
     db.all(query, [userId], function(error, playlists) {
         callback(error, playlists)
     })
@@ -191,7 +226,13 @@ exports.deletePlaylistInPlaylist = function(playlistId, callback) {
 }
 
 exports.getSearchedUser = function(searchedUser, callback) {
-    const query = "SELECT * FROM User WHERE username like ? "
+    const query = `
+                    SELECT u.id, u.username, u.email, p.title, p.image, p.id as playlistId FROM User as u
+                    LEFT JOIN Playlist as p
+                    ON u.id = p.playlistOwner AND p.private = 0
+                    WHERE u.username like ?
+                    ORDER BY u.id
+                `
     db.all(query, [searchedUser], function(error, users) {
         callback(error, users)
     })
