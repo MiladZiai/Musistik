@@ -3,45 +3,66 @@
         <p style="color: red;">{{errors}}</p>
         <div id="grid" >
         <!-- for each playlist in db -->
-        {{#each publicPlaylists}}
-            <a href="#public-{{id}}" style="border-radius: 3vh;">
-                <div class="box">
-                    <img src="/uploads/{{image}}" alt="test" class="img-responsive">
-                    <div class="bottom-left">
-                        <h2>{{title}}</h2>
+            {{#each publicPlaylists}}
+                <a href="#public-{{id}}" style="border-radius: 3vh;">
+                    <div class="box">
+                        <img src="/uploads/{{image}}" alt="test" class="img-responsive">
+                        <div class="bottom-left">
+                            <h2>{{title}}</h2>
+                        </div>
                     </div>
-                </div>
-            </a>
-            <div id="public-{{id}}" class="overlay" style="z-index: 1;">
-                    <a class="cancel" href="#"></a>
-                    <div class="customModal">
-                        <h2>{{title}}</h2>
-                        <a class="close" href="#">×</a>
-                        <div class="songs-in-playlists">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Title</th>
-                                            <th>Artist</th>
-                                            <th class="align-center">Genre</th>
-                                            <th class="align-right">Release Date</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {{#each songs}}
-                                            <tr class="active">
-                                                <td>{{songTitle}}</td>
-                                                <td>{{artistName}}</td>
-                                                <td>{{genre}}</td>
-                                                <td class="align-right">{{releaseDate}}</td>
+                </a>
+                <div id="public-{{id}}" class="overlay" style="z-index: 1;">
+                        <a class="cancel" href="#"></a>
+                        <div class="customModal">
+                            <h2>{{title}}</h2>
+                            <a class="close" href="#">×</a>
+                            <div class="songs-in-playlists">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Title</th>
+                                                <th>Artist</th>
+                                                <th class="align-center">Genre</th>
+                                                <th class="align-right">Release Date</th>
                                             </tr>
-                                        {{/each}}
-                                    </tbody>
-                                </table>
-                            </div>
-                    </div>
-            </div>
-        {{/each}}
+                                        </thead>
+                                        <tbody>
+                                            {{#each songs}}
+                                                <tr class="active">
+                                                    <td>{{songTitle}}</td>
+                                                    <td>{{artistName}}</td>
+                                                    <td>{{genre}}</td>
+                                                    <td class="align-right">{{releaseDate}}</td>
+                                                </tr>
+                                            {{/each}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                        </div>
+                </div>
+            {{/each}}
         </div>
+
+        <div style="display: flex; justify-content: center;">
+            <ul class="pagination">
+                {{#unless previousPage}}
+                    <li class="page-item">
+                        <a href="/discover/{{previousPage}}" tabindex="-1" style="color: white; font-size: 18px">Previous page</a>
+                    </li>
+                {{/unless}}
+                <li class="page-item">
+                    <a href="/discover/{{nextPage}}" style="color: white; font-size: 18px">Next page</a>
+                </li>
+            </ul> 
+        </div>
+
+        <!--
+         <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
+            {{#unless previousPage}}
+            <a class="pagination-previous has-text-white" href="/guestbook/{{previousPage}}">Previous</a>
+            {{/unless}}
+            <a class="pagination-next has-text-white" href="/guestbook/{{nextPage}}">Next page</a>
+        </nav> -->
     </div>
 </div>

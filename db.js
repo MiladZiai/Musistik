@@ -138,7 +138,7 @@ exports.getAllUsers = function(callback) {
     })
 }
 
-exports.getAllPublicPlaylists = function(callback) {
+exports.getAllPublicPlaylists = function(offset, callback) {
     const query = `
                     SELECT p.id, p.title, p.image, p.private, p.playlistOwner,
                     sp.playlistId, sp.songId, 
@@ -150,8 +150,11 @@ exports.getAllPublicPlaylists = function(callback) {
                     ON sp.songId = s.id
                     WHERE p.private = ?
                     ORDER BY p.id
+                    LIMIT 9 OFFSET ?
                 `
-    db.all(query, [0], function(error, publicPlaylists) {
+    const values = [0, offset]
+
+    db.all(query, values, function(error, publicPlaylists) {
         callback(error, publicPlaylists)
     })
 }
