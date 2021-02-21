@@ -20,34 +20,6 @@ router.get('/:page', (req, res) => {
             res.render("discover.hbs", {errors: errors})
         } else {
             if(playlists.length > 0) {
-                console.log('playlists.length : ', playlists.length )
-                
-                playlists = playlists.filter((playlist) => {
-                    playlist.songs = []
-                    const duplicates = playlists.filter(innerPlaylist => innerPlaylist.id === playlist.id).length
-                    const currentIndex = playlists.findIndex((foundPlaylist) => foundPlaylist && foundPlaylist.id === playlist.id)
-    
-                    for(let i = currentIndex; i < currentIndex + duplicates; i++) {
-                        playlist.songs.push({
-                            songId: playlists[i].songId, 
-                            songTitle: playlists[i].songTitle, 
-                            artistName: playlists[i].artistName,
-                            genre: playlists[i].genre, 
-                            releaseDate: playlists[i].releaseDate
-                        })
-                        
-                        if(i === currentIndex) {
-                            delete playlist.songId;
-                            delete playlist.songTitle;
-                            delete playlist.artistName;
-                            delete playlist.genre;
-                            delete playlist.releaseDate;
-                        }
-                    }
-                    playlists.splice(currentIndex, duplicates-1)
-    
-                    return playlist
-                })
                 const model = {
                     publicPlaylists: playlists,
                     isLoggedIn: isLoggedIn,
@@ -62,8 +34,5 @@ router.get('/:page', (req, res) => {
         }
     })
 })
-
-
-
 
 module.exports = router

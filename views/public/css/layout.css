@@ -170,6 +170,7 @@ section.sign {
     width: 100%;
 }
 .bottom-left-library{
+    overflow: hidden;
     position: absolute;
     bottom: 0px;
     color: white;

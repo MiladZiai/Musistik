@@ -8,18 +8,22 @@ router.get('/', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-    const username = req.body.username
-    const password = req.body.password
+    let username = req.body.username
+    let password = req.body.password
     const errors = []
 
-    if(username.length > 1) {
+    //replace white spaces, new lines and tabs with empty string
+    username = username.replace(/\s\s+/g, ' ');
+    password = password.replace(/\s\s+/g, ' ');
+
+    if(username.length > 0 && password.length > 0) {
         db.signIn(username, function(error, user) {
             if(typeof user === "undefined") {
                 errors.push("Wrong Username and/or Password!")
-                res.render("signIn.hbs", {errors: errors})
+                res.render("signIn.hbs", {errors})
             } else if(error){
                 errors.push("Error signing in, please try again later!")
-                res.render("signIn.hbs", {errors: errors})
+                res.render("signIn.hbs", {errors})
             } else {
                 bcrypt.compare(password, user.password, function(err, result){
                     if(result == true) {
@@ -28,18 +32,17 @@ router.post('/', (req, res) => {
                         req.session.username = user.username
                         
                         res.render("home.hbs", {isLoggedIn: req.session.isLoggedIn})
-                    } else if(err) {
-                        errors.push("Wrong Username and/or Password 2")
-                        res.render("signIn.hbs", {errors: errors})
+                    } else {
+                        errors.push("Wrong Username and/or Password!")
+                        res.render("signIn.hbs", {errors})
                     }
                 })
             }
         })
     } else {
         errors.push("Wrong Username and/or Password!")
-        res.render("signIn.hbs", {errors: errors})
+        res.render("signIn.hbs", {errors})
     }
 })
-
 
 module.exports = router

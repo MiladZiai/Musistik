@@ -9,11 +9,19 @@ router.get('/', (req, res) => {
 })
 
 router.post('/createUserAccount', (req, res) => {
-    const username = req.body.name
-    const email = req.body.email
-    const password = req.body.password
+    let username = req.body.name
+    let email = req.body.email
+    let password = req.body.password
     const repeatPassword = req.body.repeatPassword
     const errors = []
+
+    //replace white spaces, new lines and tabs with empty string
+    username = username.replace(/\s\s+/g, ' ');
+    email = email.replace(/\s\s+/g, ' ');
+    password = password.replace(/\s\s+/g, ' ');
+
+    if(!username || username.length > 20)
+        errors.push("Enter a username between 1 and 20 characters!")
 
     if(!email.includes("@"))
         errors.push("Email is not valid!")
@@ -26,20 +34,50 @@ router.post('/createUserAccount', (req, res) => {
 
     if(errors.length < 1) {
         bcrypt.genSalt(10, function(err, salt) {
-            bcrypt.hash(password, salt, function(err, hash) {
-                db.createUserAccount(username, email, hash, function(error) {
-                    if(error) {
-                        errors.push("Database error, please try again later!")
-                        res.render("signUp.hbs", {errors: errors})
+            if(err){
+                errors.push("Could not create account, please try again later!")
+                res.render("signUp.hbs", {errors})
+            } else {
+                bcrypt.hash(password, salt, function(err, hash) {
+                    if(err){    
+                        errors.push("Could not create account, please try again later!")
+                        res.render("signUp.hbs", {errors})
                     } else {
-                        req.session.isLoggedIn = true
-                        res.render("home.hbs", {isLoggedIn: req.session.isLoggedIn})
+                        db.createUserAccount(username, email, hash, function(error) {
+                            if(error) {
+                                errors.push("Database error, please try again later!")
+                                res.render("signUp.hbs", {errors})
+                            } else {
+                                db.signIn(username, function(error, user) {
+                                    if(typeof user === "undefined") {
+                                        errors.push("Could not create account, please try again later!")
+                                        res.render("signUp.hbs", {errors})
+                                    } else if(error){
+                                        errors.push("Could not create account, please try again later!")
+                                        res.render("signUp.hbs", {errors})
+                                    } else {
+                                        bcrypt.compare(password, user.password, function(err, result){
+                                            if(result == true) {
+                                                req.session.isLoggedIn = true
+                                                req.session.userId = user.id
+                                                req.session.username = user.username
+                                                
+                                                res.render("home.hbs", {isLoggedIn: req.session.isLoggedIn})
+                                            } else {
+                                                errors.push("Could not create account, please try again later!")
+                                                res.render("signUp.hbs", {errors})
+                                            }
+                                        })
+                                    }
+                                })
+                            }
+                        })
                     }
                 })
-            })
+            }
         })
     } else {
-        res.render("signUp.hbs", {errors: errors})
+        res.render("signUp.hbs", {errors})
     }
 })
 

@@ -86,7 +86,9 @@ router.get('/detailviewSongs/:id', (req, res) => {
             errors.push("Error occured when loading songs, please try again later!")
             res.render("detailviewSongs.hbs", {errors: errors, isLoggedIn})
         } else {
-            res.render("detailviewSongs.hbs", {isLoggedIn, songs: songs})
+            //playlist title fetched together with songs
+            const title = songs[0].title
+            res.render("detailviewSongs.hbs", {isLoggedIn, songs: songs, title})
         }
     })
 })
