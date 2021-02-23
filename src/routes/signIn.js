@@ -33,7 +33,7 @@ router.post('/', (req, res) => {
                         
                         res.render("home.hbs", {isLoggedIn: req.session.isLoggedIn})
                     } else {
-                        errors.push("Wrong Username and/or Password!")
+                        errors.push("Error signing in, please try again later!")
                         res.render("signIn.hbs", {errors})
                     }
                 })

@@ -1,13 +1,13 @@
 <div class="contact1">
     <div class="container-contact1" style="justify-content: center; width: 600px;">
         <form class="contact1-form validate-form" style="min-width: 340px;" action="/library/createPlaylist" method="POST" enctype="multipart/form-data">
-            
+            <input type="hidden" name="_csrf" value="{{token}}">
             <span class="contact1-form-title">
                 <!-- create comment -->
             </span>
 
             <div class="wrap-input1 validate-input">
-                <input class="input1" type="text" name="playlistTitle" placeholder="Title" maxlength="25" >
+                <input class="input1" type="text" name="playlistTitle" placeholder="Title" maxlength="25" value="{{title}}" >
                 <span class="shadow-input1"></span>
             </div>
 

@@ -17,12 +17,16 @@
 
         <div style="display: flex; justify-content: center;">
             <ul class="pagination">
-                <li class="page-item">
-                    <a href="/discover/{{previousPage}}" style="color: white; font-size: 18px"><<</a>
-                </li>
-                <li class="page-item">
-                    <a href="/discover/{{nextPage}}" style="color: white; font-size: 18px">>></a>
-                </li>
+                {{#unless firstPage}}
+                    <li class="page-item">
+                        <a href="/discover/{{previousPage}}" style="color: white; font-size: 18px"><< Previous</a>
+                    </li>
+                {{/unless}}
+                {{#unless lastPage}}
+                    <li class="page-item">
+                        <a href="/discover/{{nextPage}}" style="color: white; font-size: 18px">Next >></a>
+                    </li>
+                {{/unless}}
             </ul> 
         </div>
     </div>

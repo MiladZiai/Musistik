@@ -5,6 +5,7 @@
         </div>
 
         <form class="contact1-form validate-form" action="/signIn" method="POST">
+            <input type="hidden" name="_csrf" value="{{token}}">
             <span class="contact1-form-title">
                 Sign in to create and browse your playlists!
             </span>

@@ -3,6 +3,10 @@ const router = express.Router()
 const path = require('path')
 const multer = require('multer')
 const db = require('/Users/miladziai/Documents/skolan/Musistik/db')
+const csrf = require('csurf')
+const csrfProtection = csrf({cookie: true})
+
+
 
 //setup multer with error handling
 const storage = multer.diskStorage({
@@ -41,7 +45,7 @@ router.get('/', (req, res) => {
         db.getAllPlaylistsById(userId, function(error, playlists) {
             if(error) {
                 errors.push("Error occured when loading playlists, please try again later")
-                res.render("library.hbs", {errors: errors})
+                res.render("library.hbs", {errors})
             } else {
                 
                 playlists = playlists.filter((playlist) => {
@@ -97,8 +101,8 @@ router.get('/nonEmpty', (req, res) => {
     if(isLoggedIn) {
         db.getNonEmptyPlaylists(userId, function(error, playlists) {
             if(error) {
-                errors.push("Error occured when loading playlists, please try again later")
-                res.render("library.hbs", {errors: errors})
+                errors.push("Error occured when loading playlists, please try again later!")
+                res.render("library.hbs", {errors})
             } else {
                 playlists = playlists.filter((playlist) => {
                     playlist.songs = []
@@ -153,8 +157,8 @@ router.get('/empty', (req, res) => {
     if(isLoggedIn) {
         db.getEmptyPlaylists(userId, function(error, playlists) {
             if(error) {
-                errors.push("Error occured when loading playlists, please try again later")
-                res.render("library.hbs", {errors: errors})
+                errors.push("Error occured when loading playlists, please try again later!")
+                res.render("library.hbs", {errors})
             } else {
                 playlists = playlists.filter((playlist) => {
                     playlist.songs = []
@@ -220,16 +224,16 @@ router.post('/createPlaylist', upload.single('playlistImage'), (req, res) => {
         title = title.replace(/\s\s+/g, ' ');
 
         if(req.file === undefined)
-            errors.push("please select an image for the playlist!")
+            errors.push("Please select an image for the playlist!")
 
         if(title == ' ' || !title)
-            errors.push("please enter a title for the playlist!")
+            errors.push("Please enter a title for the playlist!")
 
         if(title.length > 25)
-            errors.push("title can not be more than 25 characters!")
+            errors.push("Title can not be more than 25 characters!")
         
         if(errors.length > 0) {
-            res.render("createPlaylist.hbs", {errors, isLoggedIn, userId})
+            res.render("createPlaylist.hbs", {errors, isLoggedIn, userId, title})
         } else {
             const playlistImage = req.file.filename
             
@@ -249,7 +253,7 @@ router.post('/createPlaylist', upload.single('playlistImage'), (req, res) => {
             db.createPlaylist(model, function(error) {
                 if(error) {
                     errors.push("Error occured when creating playlist, please try again later!")
-                    res.render("createPlaylist.hbs", {errors: errors})
+                    res.render("createPlaylist.hbs", {errors})
                 } else {
                     res.redirect("/library")
                 }
@@ -294,7 +298,12 @@ router.post('/addSong', (req, res) => {
         }
 
         if(errors.length > 0) {
-            res.render("addSong.hbs", {errors, isLoggedIn, playlistId})
+            const model = {
+                errors: errors,
+                isLoggedIn: isLoggedIn,
+                playlistId: playlistId
+            }
+            res.render("addSong.hbs", model)
         } else {
             const model = {
                 title: title,
@@ -304,17 +313,17 @@ router.post('/addSong', (req, res) => {
             db.addSong(model, function(error) {
                 if(error) {
                     errors.push("Error occured when creating song, please try again later!")
-                    res.render("addSong.hbs", {errors: errors})
+                    res.render("addSong.hbs", {errors})
                 } else {
                     db.getSongId(function(error, songId){
                         if(error){
                             errors.push("Database error, please try again later!")
-                            res.render("addSong.hbs", {errors: errors})
+                            res.render("addSong.hbs", {errors})
                         } else {
                             db.addSongInPlaylist(playlistId, songId.id , function(error){
                                 if(error) {
                                     errors.push("Error occured when adding song to playlist!")
-                                    res.render("addSong.hbs", {errors: errors})
+                                    res.render("addSong.hbs", {errors})
                                 }
                             })
                         }

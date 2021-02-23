@@ -3,6 +3,8 @@ const db = require('/Users/miladziai/Documents/skolan/Musistik/db')
 const bcrypt = require('bcryptjs')
 const router = express.Router()
 const pwMinLength = 6
+const csrf = require('csurf')
+const csrfProtection = csrf({cookie: true})
 
 router.get('/', (req, res) => {
     res.render("signUp.hbs")
@@ -17,7 +19,11 @@ router.post('/createUserAccount', (req, res) => {
 
     //replace white spaces, new lines and tabs with empty string
     username = username.replace(/\s\s+/g, ' ');
+    username = username.replace(" ", "")
+
     email = email.replace(/\s\s+/g, ' ');
+    email = email.replace(" ", "")
+
     password = password.replace(/\s\s+/g, ' ');
 
     if(!username || username.length > 20)
@@ -45,8 +51,19 @@ router.post('/createUserAccount', (req, res) => {
                     } else {
                         db.createUserAccount(username, email, hash, function(error) {
                             if(error) {
-                                errors.push("Database error, please try again later!")
-                                res.render("signUp.hbs", {errors})
+                                if(error.message == "SQLITE_CONSTRAINT: UNIQUE constraint failed: User.email")
+                                    errors.push("This E-mail address is already registred!")
+                                else if(error.message =="SQLITE_CONSTRAINT: UNIQUE constraint failed: User.username")
+                                    errors.push("This username is not available!")
+                                else
+                                    errors.push("An internal server error occurred!")
+                                
+                                const model = {
+                                    username: username,
+                                    email: email,
+                                    errors: errors
+                                }
+                                res.render("signUp.hbs", model)   
                             } else {
                                 db.signIn(username, function(error, user) {
                                     if(typeof user === "undefined") {

@@ -1,5 +1,4 @@
 const sqlite3 = require('sqlite3');
-const { query } = require('express');
 
 let db = new sqlite3.Database('./musistik.db', (err) => {
     if (err) {
@@ -157,6 +156,13 @@ exports.deletePlaylistInPlaylist = function(playlistId, callback) {
     const query = "DELETE FROM Playlist WHERE Playlist.id = ?"
     db.run(query, [playlistId], function(error) {
         callback(error)
+    })
+}
+
+exports.getLengthOfPublicPlaylists = function(callback){
+    const query = "SELECT count(*) FROM Playlist WHERE Playlist.private = ?"
+    db.all(query, [0], function(error, length) {
+        callback(error, length)
     })
 }
 

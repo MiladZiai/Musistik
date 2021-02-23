@@ -1,7 +1,7 @@
 <div class="contact1">
     <div class="container-contact1" style="justify-content: center; width: 600px;">
         <form class="contact1-form validate-form" style="min-width: 340px;" action="/library/addSong" method="POST">
-            
+            <input type="hidden" name="_csrf" value="{{token}}">
             <input type="hidden" name="playlistId" value="{{playlistId}}">
             <div class="wrap-input1 validate-input">
                 <input class="input1" type="text" name="title" placeholder="Title" maxlength="20">

@@ -5,17 +5,18 @@
         </div>
 
         <form action="/signUp/createUserAccount" method="POST" class="contact1-form validate-form">
+            <input type="hidden" name="_csrf" value="{{token}}">
             <span class="contact1-form-title">
                 Create Account
             </span>
 
             <div class="wrap-input1 validate-input" data-validate = "Name is required">
-					<input class="input1" type="text" name="name" placeholder="Username" maxlength="20">
+					<input class="input1" type="text" name="name" placeholder="Username" value="{{username}}" maxlength="20">
 					<span class="shadow-input1"></span>
 			</div>
 
             <div class="wrap-input1 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-                <input class="input1" type="email" name="email" placeholder="Email">
+                <input class="input1" type="email" name="email" value="{{email}}" placeholder="Email">
                 <span class="shadow-input1"></span>
             </div>
 
