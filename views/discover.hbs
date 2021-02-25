@@ -1,6 +1,9 @@
 <div class="contact1">
     <div class="section-discover">
         <p style="color: red;">{{errors}}</p>
+        {{#unless publicPlaylists}}
+            <h2 style="color: white; font-family: Montserrat-Regular;">No public playlists available!</h2>
+        {{/unless}}
         <div id="grid" >
         <!-- for each playlist in db -->
             {{#each publicPlaylists}}

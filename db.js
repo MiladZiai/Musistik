@@ -85,7 +85,7 @@ exports.createPlaylist = function(model, callback) {
 exports.getAllPlaylistsById = function(userId, callback) {
     const query = `
                     SELECT p.id, p.title, p.image, p.private, p.playlistOwner,
-                    sp.playlistId, sp.songId, 
+                    sp.id as songsInPlaylistId, sp.playlistId, sp.songId, 
                     s.title as songTitle, s.artistName, s.genre, s.releaseDate
                     FROM Playlist as p
                     LEFT JOIN SongsInPlaylist as sp 
@@ -104,7 +104,7 @@ exports.getAllPlaylistsById = function(userId, callback) {
 exports.getEmptyPlaylists = function(userId, callback) {
     const query = `
                     SELECT p.id, p.title, p.image, p.private, p.playlistOwner,
-                    sp.playlistId, sp.songId, 
+                    sp.id as songsInPlaylistId, sp.playlistId, sp.songId, 
                     s.title as songTitle, s.artistName, s.genre, s.releaseDate
                     FROM Playlist as p
                     LEFT JOIN SongsInPlaylist as sp 
@@ -122,7 +122,7 @@ exports.getEmptyPlaylists = function(userId, callback) {
 exports.getNonEmptyPlaylists = function(userId, callback) {
     const query = `
                     SELECT p.id, p.title, p.image, p.private, p.playlistOwner,
-                    sp.playlistId, sp.songId, 
+                    sp.id as songsInPlaylistId, sp.playlistId, sp.songId, 
                     s.title as songTitle, s.artistName, s.genre, s.releaseDate
                     FROM Playlist as p
                     LEFT JOIN SongsInPlaylist as sp 
@@ -154,6 +154,7 @@ exports.getAllPublicPlaylists = function(offset, callback) {
 
 exports.deletePlaylistInPlaylist = function(playlistId, callback) {
     const query = "DELETE FROM Playlist WHERE Playlist.id = ?"
+
     db.run(query, [playlistId], function(error) {
         callback(error)
     })
@@ -161,6 +162,7 @@ exports.deletePlaylistInPlaylist = function(playlistId, callback) {
 
 exports.getLengthOfPublicPlaylists = function(callback){
     const query = "SELECT count(*) FROM Playlist WHERE Playlist.private = ?"
+
     db.all(query, [0], function(error, length) {
         callback(error, length)
     })
@@ -178,6 +180,8 @@ db.run(`
         releaseDate DATE
     )
 `)
+//db.run("DROP TABLE Song")
+
 exports.addSong = function(model, callback) {
     const query = "INSERT INTO Song (title, artistName, genre, releaseDate) VALUES(?,?,?, date('now', 'localtime'))"
     const values = [model.title, model.artist, model.genre]
@@ -189,6 +193,7 @@ exports.addSong = function(model, callback) {
 
 exports.getSongId = function(callback) {
     const query = 'SELECT id FROM Song ORDER BY id DESC LIMIT 1'
+
     db.all(query, function(error, songId){
         callback(error, songId[0])
     })
@@ -203,16 +208,9 @@ exports.addSongInPlaylist = function(playlistId, songId, callback) {
     })
 }
 
-exports.deleteSongInPlaylist = function(songId, callback) {
-    const query = "DELETE FROM Song WHERE id = ?"
-    db.run(query, [songId], function(error){
-        callback(error)
-    })
-}
-
 exports.getSongsInPlaylistById = function(playlistId, callback) {
     const query = `
-                    SELECT sp.playlistId, sp.songId, 
+                    SELECT sp.id as songsInPlaylistId, sp.playlistId, sp.songId, 
                     s.title as songTitle, s.artistName, s.genre, s.releaseDate, p.title
                     FROM Playlist as p
                     LEFT JOIN SongsInPlaylist as sp 
@@ -226,28 +224,40 @@ exports.getSongsInPlaylistById = function(playlistId, callback) {
     })
 }
 
+exports.getAllSongs = function(callback) {
+    const query = "SELECT * FROM Song"
+
+    db.all(query, function(error, songs) {
+        callback(error, songs)
+    })
+}
+
 /*------------------------------------------------------*/
 /*------------------SongsInPlaylist---------------------*/
 /*------------------------------------------------------*/
 db.run(`
     CREATE TABLE IF NOT EXISTS SongsInPlaylist (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         playlistId INTEGER,
         songId INTEGER,
         FOREIGN KEY(playlistId) REFERENCES Playlist(id),
         FOREIGN KEY(songId) REFERENCES Song(id)
     )
 `)
+//db.run("DROP TABLE SongsInPlaylist")
 
 exports.deletePlaylistFromSongsInPlaylist = function(playlistId, callback) {
     const query = "DELETE FROM SongsInPlaylist WHERE SongsInPlaylist.playlistId = ?"
+
     db.run(query, [playlistId], function(error) {
         callback(error)
     })
 }
 
-exports.deleteSongFromSongsInPlaylist = function(songId, callback) {
-    const query = "DELETE FROM SongsInPlaylist WHERE songId = ?"
-    db.run(query, [songId], function(error){
+exports.deleteSongFromSongsInPlaylist = function(songId, playlistId,  callback) {
+    const query = "DELETE FROM SongsInPlaylist WHERE SongsInPlaylist.songId = ? AND SongsInPlaylist.playlistId = ?"
+    
+    db.run(query, [songId, playlistId], function(error){
         callback(error)
     })
 }

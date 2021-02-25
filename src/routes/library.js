@@ -3,10 +3,6 @@ const router = express.Router()
 const path = require('path')
 const multer = require('multer')
 const db = require('/Users/miladziai/Documents/skolan/Musistik/db')
-const csrf = require('csurf')
-const csrfProtection = csrf({cookie: true})
-
-
 
 //setup multer with error handling
 const storage = multer.diskStorage({
@@ -32,7 +28,6 @@ const upload = multer({
     },
     limits: { fileSize: maxSize }
 })
-
 
 router.get('/', (req, res) => {
     const isLoggedIn = req.session.isLoggedIn
@@ -82,7 +77,7 @@ router.get('/', (req, res) => {
                     privatePlaylists: privatePlaylists,
                     publicPlaylists: publicPlaylists,
                     isLoggedIn: isLoggedIn,
-                    userId: userId
+                    userId: userId,
                 }
 
                 res.render("library.hbs", model)
@@ -205,8 +200,9 @@ router.get('/empty', (req, res) => {
     }
 })
 
-router.get('/createPlaylist/:id', (req, res) => {
-    const userId = req.params.id
+router.get('/createPlaylist', (req, res) => {
+    const userId = req.session.userId
+
     if(!req.session.isLoggedIn)
         res.redirect('/signIn')
     else
@@ -219,9 +215,9 @@ router.post('/createPlaylist', upload.single('playlistImage'), (req, res) => {
         let title = req.body.playlistTitle
         let private = req.body.private
         const userId = req.body.userId
-
+        
         //replace white spaces, new lines and tabs with empty string
-        title = title.replace(/\s\s+/g, ' ');
+        title = title.replace(/\s\s+/g, ' ')
 
         if(req.file === undefined)
             errors.push("Please select an image for the playlist!")
@@ -284,9 +280,9 @@ router.post('/addSong', (req, res) => {
         const inputSize = 20
         
         //replace white spaces, new lines and tabs with empty string
-        title = title.replace(/\s\s+/g, ' ');
-        artist = artist.replace(/\s\s+/g, ' ');
-        genre = genre.replace(/\s\s+/g, ' ');
+        title = title.replace(/\s\s+/g, ' ')
+        artist = artist.replace(/\s\s+/g, ' ')
+        genre = genre.replace(/\s\s+/g, ' ')
 
         if(!title || !genre || !artist ||
             title == ' ' || genre == ' ' || artist == ' '){
@@ -315,12 +311,12 @@ router.post('/addSong', (req, res) => {
                     errors.push("Error occured when creating song, please try again later!")
                     res.render("addSong.hbs", {errors})
                 } else {
-                    db.getSongId(function(error, songId){
+                    db.getSongId(function(error, song){
                         if(error){
                             errors.push("Database error, please try again later!")
                             res.render("addSong.hbs", {errors})
                         } else {
-                            db.addSongInPlaylist(playlistId, songId.id , function(error){
+                            db.addSongInPlaylist(playlistId, song.id , function(error){
                                 if(error) {
                                     errors.push("Error occured when adding song to playlist!")
                                     res.render("addSong.hbs", {errors})
@@ -337,10 +333,62 @@ router.post('/addSong', (req, res) => {
     }
 })
 
+router.get('/addSongFromList/:id', (req, res) => {
+    const isLoggedIn = req.session.isLoggedIn
+    const playlistId = req.params.id
+    const errors = []
+
+    if(!isLoggedIn)
+        res.redirect('/signIn')
+    else{
+        db.getAllSongs(function(error, songs) {
+            if(error) {
+                errors.push("Error occured when loading songs, please try again later!")
+                res.render("listOfSongs.hbs", {errors, isLoggedIn, playlistId})
+            } else [
+                res.render("listOfSongs.hbs", {isLoggedIn, songs, playlistId})
+            ]
+        })
+    }
+})
+router.post('/addSongFromList', (req, res) => {
+    const isLoggedIn = req.session.isLoggedIn
+    const songId = req.body.songId
+    const playlistId = req.body.playlistId
+    const errors = []
+
+    if(isLoggedIn) {
+       if(songId && playlistId) {
+            db.addSongInPlaylist(playlistId, songId , function(error){
+                if(error) {
+                    errors.push("Error occured when adding song to playlist!")
+                    db.getAllSongs(function(error, songs) {
+                        if(error) {
+                            errors.push("Error occured when loading songs, please try again later!")
+                            res.render("listOfSongs.hbs", {errors, isLoggedIn})
+                        } else [
+                            res.render("listOfSongs.hbs", {isLoggedIn, songs, playlistId, errors})
+                        ]
+                    })
+                } else {
+                    res.redirect('/library/addSongFromList/' + playlistId)
+                }
+            })
+       } else {
+            errors.push("Error occured when loading songs, please try again later!")
+            res.render("listOfSongs.hbs", {errors, isLoggedIn})
+       }
+    } else {
+        res.redirect('/signIn')
+    }
+})
+
 router.post('/deletePlaylist', (req, res) => {
     const playlistId = req.query.id
+    const songsInPlaylistId = req.body.songsInPlaylistId
     const isLoggedIn = req.session.isLoggedIn
     const userId = req.session.userId
+    const playlistOwner = req.body.playlistOwner
     const errors = []
     var privatePlaylists = []
     var publicPlaylists = []
@@ -351,7 +399,7 @@ router.post('/deletePlaylist', (req, res) => {
     }
 
     if(isLoggedIn) {
-        if(userId){
+        if(userId == playlistOwner){
             db.deletePlaylistFromSongsInPlaylist(playlistId, function(error){
                 if(error) {
                     errors.push("Error occured when deleting playlist! please try again later")
@@ -421,29 +469,37 @@ router.post('/deletePlaylist', (req, res) => {
     }
 })
 router.post('/deleteSongInPlaylist', (req, res) => {
+    const isLoggedIn = req.session.isLoggedIn
     const songId = req.body.songId
+    const playlistId = req.query.id
+    const userId = req.session.userId
+    const playlistOwner = req.body.playlistOwner
     const errors = []
 
-    if(songId) {
-        db.deleteSongInPlaylist(songId, function(error){
-            if(error){
-                errors.push("Error occured when deleting song!")
-                res.render("library.hbs", {errors})
-            } else {
-                db.deleteSongFromSongsInPlaylist(songId, function(error){
+    if(isLoggedIn) {
+        if(userId == playlistOwner) {
+            if(songId && playlistId) {
+                db.deleteSongFromSongsInPlaylist(songId, playlistId, function(error){
                     if(error){
                         errors.push("Error occured when deleting song!")
-                        res.render("library.hbs", {errors})
+                        res.render("library.hbs", {errors, isLoggedIn})
                     } else {
                         res.redirect("/library")
                     }
                 })
+            } else {
+                errors.push("Error occured when deleting song!")
+                res.render("library.hbs", {errors, isLoggedIn})
             }
-        })
+        } else {
+            errors.push("You are not authorized!")
+            res.render("library.hbs", {errors, isLoggedIn})
+        }
     } else {
         errors.push("You are not authorized!")
-        res.render("library.hbs", {errors})
+        res.render("library.hbs", {errors, isLoggedIn})
     }
+    
     
 })
 

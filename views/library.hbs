@@ -2,7 +2,7 @@
     <div class="wrapper">
         {{#if isLoggedIn}}
             <div class="create-playlist-btn">
-                <a href="/library/createPlaylist/{{userId}}" 
+                <a href="/library/createPlaylist" 
                     class="btn" 
                     style="border-radius: 3vh; margin-left: 6rem"
                 >
@@ -19,12 +19,10 @@
                         <!-- menu component -->
                         <ul class="menu">
                             <form action="/library/empty" method="GET">
-                                <input type="hidden" name="_csrf" value="{{token}}">
                                 <button type="submit" style="color: #5755d9;"><li>empty playlists</li></button>
                             </form>
 
                             <form action="/library/nonEmpty" method="GET">
-                                <input type="hidden" name="_csrf" value="{{token}}">
                                 <button type="submit" style="color: #5755d9;"><li>non empty playlists</li></button>
                             </form>
                         </ul>
@@ -74,9 +72,15 @@
                             <a class="close" href="#">×</a>
                             
                             <form action="/library/deletePlaylist?id={{id}}" method="POST" >
-                                <input type="hidden" name="_csrf" value="{{token}}">
-                                <a href="/library/addSong?id={{id}}" style="border-radius: 3vh; " class="btn">Add song</a>
-                                <button type="submit" style="border-radius: 3vh;" class="btn">Delete playlist</button>
+                                <input type="hidden" name="songsInPlaylistId" value="{{songsInPlaylistId}}">
+                                <input type="hidden" name="playlistOwner" value="{{playlistOwner}}">
+                                <div style="float:left;">
+                                    <a href="/library/addSong?id={{id}}" style="border-radius: 3vh;" class="btn">Create Song</a>
+                                    <a href="/library/addSongFromList/{{id}}" style="border-radius: 3vh;" class="btn">Add Song</a>
+                                </div>
+                                <div style="float:right;">
+                                    <button type="submit" style="border-radius: 3vh; text-align: end;" class="btn">Delete playlist</button>
+                                </div>
                             </form>
                             <div class="songs-in-playlists">
                                 <table class="table">
@@ -96,12 +100,13 @@
                                                 <td>{{artistName}}</td>
                                                 <td>{{genre}}</td>
                                                 <td class="align-right">{{releaseDate}}</td>
-                                                <form action="/library/deleteSongInPlaylist" method="POST">
-                                                    <input type="hidden" name="_csrf" value="{{token}}">
+                                                <form action="/library/deleteSongInPlaylist?id={{../id}}" method="POST">
+                                                    <input type="hidden" name="songsInPlaylistId" value="{{../songsInPlaylistId}}">
+                                                    <input type="hidden" name="playlistOwner" value="{{../playlistOwner}}">
                                                     <input type="hidden" name="songId" value="{{songId}}">
                                                     <td>
                                                         {{#if songId}}
-                                                            <button type="submit"><a class="icon icon-delete"></a></button>
+                                                            <button type="submit" style="float: right;"><a class="icon icon-delete"></a></button>
                                                         {{/if}}
                                                     </td>
                                                 </form>
@@ -120,9 +125,15 @@
                             <h2>{{title}}</h2>
                             <a class="close" href="#">×</a>
                             <form action="/library/deletePlaylist?id={{id}}" method="POST" >
-                                <input type="hidden" name="_csrf" value="{{token}}">
-                                <a href="/library/addSong?id={{id}}" style="border-radius: 3vh; " class="btn">Add song</a>
-                                <button type="submit" style="border-radius: 3vh;" class="btn">Delete playlist</button>
+                                <input type="hidden" name="songsInPlaylistId" value="{{songsInPlaylistId}}">
+                                <input type="hidden" name="playlistOwner" value="{{playlistOwner}}">
+                                <div style="float:left;">
+                                    <a href="/library/addSong?id={{id}}" style="border-radius: 3vh;" class="btn">Create Song</a>
+                                    <a href="/library/addSongFromList/{{id}}" style="border-radius: 3vh;" class="btn">Add Song</a>
+                                </div>
+                                <div style="float:right;">
+                                    <button type="submit" style="border-radius: 3vh; text-align: end;" class="btn">Delete playlist</button>
+                                </div>
                             </form>
                             <div class="songs-in-playlists">
                                 <table class="table">
@@ -142,12 +153,13 @@
                                                 <td>{{artistName}}</td>
                                                 <td>{{genre}}</td>
                                                 <td class="align-right">{{releaseDate}}</td>
-                                                <form action="/library/deleteSongInPlaylist" method="POST">
-                                                    <input type="hidden" name="_csrf" value="{{token}}">
+                                                <form action="/library/deleteSongInPlaylist?id={{../id}}" method="POST">
+                                                    <input type="hidden" name="songsInPlaylistId" value="{{../songsInPlaylistId}}">
+                                                    <input type="hidden" name="playlistOwner" value="{{../playlistOwner}}">
                                                     <input type="hidden" name="songId" value="{{songId}}">
                                                     <td>
                                                         {{#if songId}}
-                                                            <button type="submit"><a class="icon icon-delete"></a></button>
+                                                            <button type="submit" style="float: right;"><a class="icon icon-delete"></a></button>
                                                         {{/if}}
                                                     </td>
                                                 </form>

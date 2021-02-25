@@ -3,8 +3,6 @@ const db = require('/Users/miladziai/Documents/skolan/Musistik/db')
 const bcrypt = require('bcryptjs')
 const router = express.Router()
 const pwMinLength = 6
-const csrf = require('csurf')
-const csrfProtection = csrf({cookie: true})
 
 router.get('/', (req, res) => {
     res.render("signUp.hbs")
@@ -16,15 +14,15 @@ router.post('/createUserAccount', (req, res) => {
     let password = req.body.password
     const repeatPassword = req.body.repeatPassword
     const errors = []
-
+    
     //replace white spaces, new lines and tabs with empty string
-    username = username.replace(/\s\s+/g, ' ');
+    username = username.replace(/\s\s+/g, ' ')
     username = username.replace(" ", "")
 
-    email = email.replace(/\s\s+/g, ' ');
+    email = email.replace(/\s\s+/g, ' ')
     email = email.replace(" ", "")
 
-    password = password.replace(/\s\s+/g, ' ');
+    password = password.replace(/\s\s+/g, ' ')
 
     if(!username || username.length > 20)
         errors.push("Enter a username between 1 and 20 characters!")

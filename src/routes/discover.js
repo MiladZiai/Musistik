@@ -10,13 +10,12 @@ router.get('/:page', (req, res) => {
     let previousPage = nextPage = currentPage
     let lastPage = false
     let firstPage = false 
-    const startPage = 0
+    const errors = []
 
     nextPage++
     if(previousPage > 0)
         previousPage--
     
-    const errors = []
     db.getAllPublicPlaylists(offset, function(error, playlists) {
         if(error) {
             errors.push("Could not load playlists, please try agian later!")
@@ -28,10 +27,10 @@ router.get('/:page', (req, res) => {
                         errors.push("Could not load playlists, please try agian later!")
                         res.render("discover.hbs", {errors})
                     } else {
-                        if(currentPage == startPage) {
+                        if(currentPage == 0) {
                             firstPage = true
                         }
-                        if(playlists.length < playlistsPerPage){
+                        if(playlists.length < playlistsPerPage) {
                             lastPage = true
                         }
                         if(firstPage && lengthOfPlaylists[0]['count(*)'] <= playlistsPerPage){
@@ -53,8 +52,13 @@ router.get('/:page', (req, res) => {
                     }
                 })
             } else {
-                currentPage--
-                res.redirect("/discover/" + currentPage)
+                const model = {
+                    publicPlaylists: playlists,
+                    isLoggedIn: isLoggedIn,
+                    firstPage: true,
+                    lastPage: true
+                }
+                res.render("discover.hbs", model)
             } 
         }
     })
