@@ -3,7 +3,7 @@ const router = express.Router()
 const db = require('/Users/miladziai/Documents/skolan/Musistik/db')
 
 router.get('/', (req, res) => {
-    errors = []
+    const errors = []
     if(req.query.search) {
         let searchedUser = req.query.search
         searchedUser = '%'+searchedUser+'%'
@@ -36,10 +36,15 @@ router.get('/', (req, res) => {
                     
                     return user
                 })
-                res.render("users.hbs", {users, isLoggedIn: req.session.isLoggedIn})
+                if(users.length < 1) {
+                    const noUsersFound = "No users found!"
+                    res.render("users.hbs", {users, isLoggedIn: req.session.isLoggedIn, noUsersFound})
+                } else {
+                    res.render("users.hbs", {users, isLoggedIn: req.session.isLoggedIn})
+                }
+                
             }
         })
-        
     } else {
         db.getAllUsers(function(error, users){
             if(error) {

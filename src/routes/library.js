@@ -210,7 +210,7 @@ router.get('/createPlaylist', (req, res) => {
 })
 router.post('/createPlaylist', upload.single('playlistImage'), (req, res) => {
     const isLoggedIn = req.session.isLoggedIn
-    errors = []
+    const errors = []
     if(isLoggedIn) {
         let title = req.body.playlistTitle
         let private = req.body.private
@@ -233,10 +233,10 @@ router.post('/createPlaylist', upload.single('playlistImage'), (req, res) => {
         } else {
             const playlistImage = req.file.filename
             
-            if(typeof private === "undefined")
-                private = 0
-            else
+            if(private)
                 private = 1
+            else
+                private = 0
 
             const model = {
                 userId: userId,
@@ -255,7 +255,6 @@ router.post('/createPlaylist', upload.single('playlistImage'), (req, res) => {
                 }
             })
         }
-        
     } else {
         res.redirect("/signIn")
     }
@@ -345,9 +344,9 @@ router.get('/addSongFromList/:id', (req, res) => {
             if(error) {
                 errors.push("Error occured when loading songs, please try again later!")
                 res.render("listOfSongs.hbs", {errors, isLoggedIn, playlistId})
-            } else [
+            } else {
                 res.render("listOfSongs.hbs", {isLoggedIn, songs, playlistId})
-            ]
+            }
         })
     }
 })
@@ -365,10 +364,10 @@ router.post('/addSongFromList', (req, res) => {
                     db.getAllSongs(function(error, songs) {
                         if(error) {
                             errors.push("Error occured when loading songs, please try again later!")
-                            res.render("listOfSongs.hbs", {errors, isLoggedIn})
-                        } else [
+                            res.render("listOfSongs.hbs", {errors, isLoggedIn, playlistId})
+                        } else {
                             res.render("listOfSongs.hbs", {isLoggedIn, songs, playlistId, errors})
-                        ]
+                        }
                     })
                 } else {
                     res.redirect('/library/addSongFromList/' + playlistId)
@@ -385,7 +384,6 @@ router.post('/addSongFromList', (req, res) => {
 
 router.post('/deletePlaylist', (req, res) => {
     const playlistId = req.query.id
-    const songsInPlaylistId = req.body.songsInPlaylistId
     const isLoggedIn = req.session.isLoggedIn
     const userId = req.session.userId
     const playlistOwner = req.body.playlistOwner
@@ -482,7 +480,7 @@ router.post('/deleteSongInPlaylist', (req, res) => {
                 db.deleteSongFromSongsInPlaylist(songId, playlistId, function(error){
                     if(error){
                         errors.push("Error occured when deleting song!")
-                        res.render("library.hbs", {errors, isLoggedIn})
+                        res.render("library.hbs", {errors, isLoggedIn, songId})
                     } else {
                         res.redirect("/library")
                     }
@@ -493,14 +491,11 @@ router.post('/deleteSongInPlaylist', (req, res) => {
             }
         } else {
             errors.push("You are not authorized!")
-            res.render("library.hbs", {errors, isLoggedIn})
+            res.render("library.hbs", {errors, isLoggedIn, songId})
         }
     } else {
-        errors.push("You are not authorized!")
-        res.render("library.hbs", {errors, isLoggedIn})
+        res.redirect("/signIn")
     }
-    
-    
 })
 
 

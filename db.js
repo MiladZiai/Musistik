@@ -18,6 +18,7 @@ db.run(`
         password VARCHAR(100)
     )
 `)
+
 exports.createUserAccount = function(username, email, password, callback) {
     const query = "INSERT INTO User (username, email, password) VALUES(?, ?, ?)"
     const values = [username, email, password]
@@ -49,7 +50,8 @@ exports.getAllUsers = function(callback) {
 
 exports.getSearchedUser = function(searchedUser, callback) {
     const query = `
-                    SELECT u.id, u.username, u.email, p.title, p.image, p.id as playlistId FROM User as u
+                    SELECT u.id, u.username, u.email, p.title, p.image, p.id as playlistId 
+                    FROM User as u
                     LEFT JOIN Playlist as p
                     ON u.id = p.playlistOwner AND p.private = 0
                     WHERE u.username like ?
@@ -73,6 +75,7 @@ db.run(`
         FOREIGN KEY(playlistOwner) REFERENCES User(id)
     )
 `)
+
 exports.createPlaylist = function(model, callback) {
     const query = "INSERT INTO Playlist (title, image, private, playlistOwner) VALUES(?, ?, ?, ?)"
     const values = [model.title, model.playlistImage, model.private, model.playListOwner]
@@ -180,7 +183,6 @@ db.run(`
         releaseDate DATE
     )
 `)
-//db.run("DROP TABLE Song")
 
 exports.addSong = function(model, callback) {
     const query = "INSERT INTO Song (title, artistName, genre, releaseDate) VALUES(?,?,?, date('now', 'localtime'))"
@@ -244,7 +246,6 @@ db.run(`
         FOREIGN KEY(songId) REFERENCES Song(id)
     )
 `)
-//db.run("DROP TABLE SongsInPlaylist")
 
 exports.deletePlaylistFromSongsInPlaylist = function(playlistId, callback) {
     const query = "DELETE FROM SongsInPlaylist WHERE SongsInPlaylist.playlistId = ?"

@@ -36,6 +36,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(cookieParser())
 
+//static pages on the webapp
 app.get('/', (req, res) => {
   res.render("home.hbs", {isLoggedIn: req.session.isLoggedIn})
 })

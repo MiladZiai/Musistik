@@ -4,10 +4,12 @@
         <section class="navbar-section" style="text-align: center; margin-bottom: 3vh;">
             <form action="/users" method="GET">
                 <div class="input-group input-inline" style="z-index: none;">
-                    <input class="form-input" type="text" name="search" placeholder="search for users..">
-                    <button class="btn btn-primary input-group-btn" type="submit">Search</button>
+                    <input class="form-input search" type="text" name="search" placeholder="Search for users..">
+                    <button class="btn btn-primary input-group-btn search" type="submit">Search</button>
                 </div>
             </form>
+            <br>
+            <h3 style="color: white; font-family: Montserrat-Regular;">{{noUsersFound}}</h3>
         </section>
         <div id="users-grid" >
             {{#each users}}

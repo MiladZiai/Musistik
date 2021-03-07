@@ -130,6 +130,7 @@ section.sign {
 }
 
 
+
 /******************* Library Scrolling Container ******************/
 .section-library{
     margin: 1rem 5rem 1rem 5rem;
@@ -185,6 +186,9 @@ section.sign {
     text-align: center;
     line-height: 80px;
     margin:5px;
+}
+.filterLi {
+    color: #5755d9;
 }
 
 
@@ -315,6 +319,13 @@ section.sign {
 }
 .input-group .input-group-btn {
     z-index: 0 !important;
+}
+input.form-input.search {
+    border-radius: 3vh;
+    margin-bottom: 10px;
+}
+button.btn.btn-primary.input-group-btn.search {
+    border-radius: 0 3vh 3vh 0;
 }
 
 
