@@ -3,7 +3,6 @@ const expressHandlebars = require('express-handlebars')
 const bodyParser = require('body-parser')
 const path = require('path')
 const session = require('express-session')
-const cookieParser = require('cookie-parser')
 
 //routers
 const discover = require("./src/routes/discover")
@@ -21,7 +20,7 @@ const app = express()
 var sessionOptions = {
   secret: 'keyboard cat',
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
 }
 
 app.engine('hbs', expressHandlebars({
@@ -34,7 +33,6 @@ app.use(express.static(path.join(__dirname, '/views/public')))
 app.use(session(sessionOptions))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
-app.use(cookieParser())
 
 //static pages on the webapp
 app.get('/', (req, res) => {

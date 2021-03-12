@@ -27,7 +27,7 @@ router.post("/", checkAuth, upload.single('playlistImage'), (req, res) => {
 
     if(req.file === undefined){
         res.status(400).json({
-            message: "please select an image for the playlist!"
+            message: "Please select an image for the playlist!"
         })
     } else if(title.length > 25){
         res.status(400).json({
@@ -35,7 +35,7 @@ router.post("/", checkAuth, upload.single('playlistImage'), (req, res) => {
         })
     } else if(!title || !private || title == ' '){
         res.status(400).json({
-            message: "please select a title and/or private for the playlist!"
+            message: "Please enter a title and/or private for the playlist!"
         })
     } else {
         const playlistImage = req.file.filename 
@@ -86,7 +86,7 @@ router.post("/addSongToPlaylist/:id", checkAuth, (req, res) => {
         db.addSong(model, function(error) {
             if(error){
                 res.status(400).json({
-                    message: "Error occured when adding song, please try again later!"
+                    message: "Could not add song, please try again later!”"
                 })
             } else {
                 db.getSongId(function(error, song) {
@@ -98,7 +98,7 @@ router.post("/addSongToPlaylist/:id", checkAuth, (req, res) => {
                         db.addSongInPlaylist(playlistId, song.id, function(error) {
                             if(error){
                                 res.status(400).json({
-                                    message: "Error occured when adding song to playlist!"
+                                    message: "Error occurred when adding song to playlist!"
                                 })
                             } else {
                                 res.status(204).json()
