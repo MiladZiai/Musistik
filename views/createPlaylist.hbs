@@ -1,0 +1,38 @@
+<div class="contact1">
+    <div class="container-contact1" style="justify-content: center; width: 600px;">
+        <form class="contact1-form validate-form" style="min-width: 340px;" action="/library/createPlaylist" method="POST" enctype="multipart/form-data">
+            <span class="contact1-form-title">
+                <!-- create comment -->
+            </span>
+            <div class="wrap-input1 validate-input">
+                <input class="input1" type="text" name="playlistTitle" placeholder="Title" maxlength="25" value="{{title}}" >
+                <span class="shadow-input1"></span>
+            </div>
+
+            <div class="wrap-input1 validate-input" data-validate = "Subject is required">
+                
+                <span class="shadow-input1"></span>
+                <input type="file" name="playlistImage">
+                <div class="form-group" style="display:inline-block; float:left">
+                    <label class="form-switch">
+                        <input type="checkbox" id="private" name="private"  value="true" >
+                        <i class="form-icon"></i> Private
+                    </label>
+                </div>
+            </div>
+
+            <br>
+            <p style="color: red;">{{errors}}</p>
+            <input type="hidden" name="userId" value="{{userId}}">
+            <div class="container-contact1-form-btn">
+                <button class="contact1-form-btn" type="submit">
+                    <span>
+                        Create Playlist
+                        <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                    </span>
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>

@@ -1,0 +1,47 @@
+<div class="contact1">
+    <div class="section-discover" > 
+        <p style="color: red;">{{errors}}</p>
+        <section class="navbar-section" style="text-align: center; margin-bottom: 3vh;">
+            <form action="/users" method="GET">
+                <div class="input-group input-inline" style="z-index: none;">
+                    <input class="form-input search" type="text" name="search" placeholder="Search for users..">
+                    <button class="btn btn-primary input-group-btn search" type="submit">Search</button>
+                </div>
+            </form>
+            <br>
+            <h3 style="color: white; font-family: Montserrat-Regular;">{{noUsersFound}}</h3>
+        </section>
+        <div id="users-grid" >
+            {{#each users}}
+                <a href="#users-{{username}}">
+                    <div class="tile" >
+                        <div class="tile-content">
+                            <p class="tile-title">{{username}}</p>
+                            <p class="tile-subtitle">{{email}}</p>
+                        </div>
+                    </div>
+                </a>
+                <div id="users-{{username}}" class="overlay">
+                    <a class="cancel" href="#"></a>
+                    <div class="customModal">
+                        <h2>{{username}}'s playlists!</h2>
+                        <a class="close" href="#">×</a>
+                        <div id="users-grid">
+                            {{#each playlists}}
+                                <a href="/users/detailviewSongs/{{playlistId}}">
+                                    <div class="box-section-library">
+                                        <img src="/uploads/{{image}}"  alt="No image" class="img-responsive-library">
+                                        <div class="bottom-left-library">
+                                            <h2>{{title}}</h2>
+                                        </div>
+                                    </div>
+                                </a>
+                            {{/each}}
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+                
+    </div>
+</div>

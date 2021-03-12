@@ -1,0 +1,27 @@
+<div class="detailviewSongs">
+    <div>
+        <h2 style="text-align: center;">{{title}}</h2>
+    </div>
+    <div class="songs-in-playlists">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Artist</th>
+                    <th class="align-center">Genre</th>
+                    <th class="align-right">Release Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each songs}}
+                    <tr class="active">
+                        <td>{{songTitle}}</td>
+                        <td>{{artistName}}</td>
+                        <td>{{genre}}</td>
+                        <td class="align-right">{{releaseDate}}</td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>

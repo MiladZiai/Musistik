@@ -1,0 +1,40 @@
+{{#if isLoggedIn}}
+    <div class="detailviewSongs">
+        <div>
+            <a href="/library" style="float: left;"><i class="fas fa-chevron-left fa-2x"></i></a>
+            <h2 style="text-align: center;">All Songs</h2>
+        </div>
+        
+        <div class="songs-in-playlists">
+            <p style="color: red;">{{errors}}</p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Artist</th>
+                        <th class="align-center">Genre</th>
+                        <th class="align-right">Release Date</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each songs}}
+                        <tr class="active">
+                            <td>{{title}}</td>
+                            <td>{{artistName}}</td>
+                            <td>{{genre}}</td>
+                            <td class="align-right">{{releaseDate}}</td>
+                            <form action="/library/addSongFromList" method="POST">
+                                <input type="hidden" name="songId" value="{{id}}">
+                                <input type="hidden" name="playlistId" value="{{../playlistId}}">
+                                <td>
+                                    <button type="submit" style="float: right;"><a class="icon icon-plus"></a></button>
+                                </td>
+                            </form>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{{/if}}

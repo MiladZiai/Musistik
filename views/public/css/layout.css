@@ -1,0 +1,362 @@
+body{
+    background: -webkit-linear-gradient(left, #5755d9, #0084ff)!important;
+}
+
+/******************* headerBAR ******************/
+header.headerbar {
+    margin: 3%;
+}
+.btn.btn-link{
+    border:none !important;
+    font-size: large !important;
+}
+.btn.btn-link:active, .btn.btn-link:focus .btn.btn-link:visited{
+    box-shadow: none !important;
+}
+.btn.btn-link:hover, :checked + a{
+    color: rgb(19, 6, 44) !important;
+}
+header, .navbar {
+    z-index: 100;
+    width: 100%;
+    background: white;
+}
+section.logo img{
+    margin-left: 50px;
+}
+header ul{
+    float: right;
+    background-color: white;
+}
+ol, ul {
+    margin: 0 !important;
+}
+header ul li{
+    margin-top: 25px;
+    display: inline-block;
+    background-color: white;
+    color: #5755d9;
+}
+.checkbtn{
+    font-size: 30px;
+    color: #5755d9;
+    float: right;
+    line-height: 80px;
+    margin: 0 20px;
+    cursor: pointer;
+    display: none;
+}
+#check{
+    display: none;
+}
+section.sign {
+    margin-right: 50px;
+}
+@media (max-width: 858px){
+    section.logo {
+        display: none !important;
+        max-width: 100px;
+    }
+    .checkbtn{
+        display: block;
+    }
+    ul{
+        position: fixed;
+        width: 100%;
+        height: 100vh;
+        top: 80px;
+        left: -100%;
+        text-align: center;
+        transition: all .5s;
+    }
+    header ul li{
+        display: block;
+        margin: 50px 0;
+    }
+    #check:checked ~ ul{
+        z-index: 100;
+        left: 0;
+    }
+    section.sign {
+        margin-right: 20px;
+    }
+}
+
+/******************* Discover grid ******************/
+#grid{
+    margin: 0 auto;
+    display: grid;
+    grid-gap: 1rem;
+}
+@media (min-width: 768px) {
+    #grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 992px) {
+    #grid { grid-template-columns: repeat(3, 1fr); }
+}
+.bottom-left {
+    position: absolute;
+    bottom: 0px;
+    color: white;
+    width: 100%;
+    text-align: center;
+    overflow-wrap: break-word;
+    border-radius: 3vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 80px;
+}
+.box{
+    position: relative;
+    min-width: 280px;
+    object-fit: cover;
+}
+.box:hover{
+    opacity: 0.5;
+    box-shadow: 10px 10px 5px #000000;
+    -moz-box-shadow: 0px 10px 5px #000000;
+    -webkit-box-shadow: 0px 10px 5px #000000; 
+    border-radius: 3vh;
+}
+.img-responsive {
+    border-radius: 3vh;
+    min-height: 300px;
+    max-height: 300px;
+    width: 100%;
+    
+}
+.section-discover{
+    margin: 2rem 3rem;
+    border-radius: 3vh;
+}
+
+
+
+/******************* Library Scrolling Container ******************/
+.section-library{
+    margin: 1rem 5rem 1rem 5rem;
+    width: 80vw;
+    height: 12rem;
+    white-space: nowrap;
+    position: relative;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 3vh;
+}
+.box-section-library{
+    position: relative;
+    border-radius: 3vh;
+    width: 240px;
+    height: 240px;
+    background-color: #eee;
+    float: none;
+    margin: 0 1%;
+    display: inline-block;
+}
+.box-section-library:hover{
+    opacity: 0.5;
+    box-shadow: 10px 10px 5px #000000;
+    -moz-box-shadow: 0px 10px 5px #000000;
+    -webkit-box-shadow: 0px 10px 5px #000000; 
+    border-radius: 3vh;
+}
+.playlist-title-library {
+    margin-top: 8vh;
+    color: white;
+    text-align: center;
+}
+.img-responsive-library{
+    border-radius: 3vh;
+    height: 100% !important; 
+    width: 100%;
+}
+.bottom-left-library{
+    overflow: hidden;
+    position: absolute;
+    bottom: 0px;
+    color: white;
+    border-radius: 3vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 80px;
+    width: 240px;
+}
+.bottom-left-library > h2 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    line-height: 80px;
+    margin:5px;
+}
+.filterLi {
+    color: #5755d9;
+}
+
+
+/******************* Library playlist modal ******************/
+.customModal {
+    margin: 100px 2rem;
+    padding: 10px;
+    background: #fff;
+    border: 1px solid #666;
+    border-radius: 2vh;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+    position: relative;
+    height: 80vh;
+    overflow-y: scroll;
+}
+.customModal .close {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 20px;
+    right: 20px;
+    opacity: 0.8;
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #777;
+}
+.customModal .close:hover { opacity: 1; }
+.customModal h2 {
+    margin-top: 1rem;
+    text-align: center;
+}
+.customModal p {
+    margin: 0 0 1em;
+    text-align: center;
+}
+.customModal .close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #333;
+}
+.customModal .close:hover {
+    color: #5755d9;
+}
+.customModal p:last-child { margin: 0; }
+.overlay {
+    position: fixed;
+    top: 0;
+    height: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.5);
+    visibility: hidden;
+    opacity: 0;
+}
+.overlay .cancel {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    cursor: default;
+}
+.overlay:target {
+    visibility: visible;
+    opacity: 1;
+}
+
+
+/******************* Users ******************/
+.tile-content {
+    margin: 0.5rem 0.5rem 0.5rem 0.5rem; 
+    min-width: 150px !important;
+    min-height: 70px !important;
+    text-align: center;
+}
+.tile {
+    background-color: whitesmoke;
+    border-radius: 3vh;
+}
+#users-grid{
+    max-width: 1000px;
+    max-height: 250px;
+    margin: 0 auto;
+    display: grid;
+    grid-gap: 1rem;
+}
+@media (min-width: 592px) {
+    #users-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 768px) {
+    #users-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 992px) {
+    #users-grid { grid-template-columns: repeat(4, 1fr); }
+}
+.align-right {
+    text-align: right;
+    
+}
+.align-top{
+    margin: 25vh auto;
+    position: absolute;
+    color: white;
+    font-size: 5vh;
+    text-align: center;
+    font-weight: 150;
+    font-family: Montserrat-Regular;
+}
+.align-bottom {
+    color: white;
+    margin: 31vh auto;
+    position: absolute;
+    font-size: 8vh;
+    text-align: center;
+    font-weight: 200;
+    font-family: Montserrat-Regular;
+}
+.detailviewSongs {
+    border-radius: 3vh;
+    justify-content: center;
+    align-items: center;
+    margin: 3vh 4vh;
+    padding: 3vh 4vh;
+    background: white;
+}
+.input-group .input-group-btn {
+    z-index: 0 !important;
+}
+input.form-input.search {
+    border-radius: 3vh;
+    margin-bottom: 10px;
+}
+button.btn.btn-primary.input-group-btn.search {
+    border-radius: 0 3vh 3vh 0;
+}
+
+
+/******************* Contact ******************/
+.contact {
+    margin-right: 12px;
+    font-size: 22px;
+}
+
+.hometitle {
+    text-align: center;
+    margin-top: 20vw;
+}
+
+.hometitle.about {
+    text-align: center;
+    margin-top: 7vw;
+}
+
+.hometitle h1{
+    color:white;
+    font-size: 2.5rem;
+    font-family: Montserrat-Regular;
+}
+
+.hometitle p{
+    color:white;
+    font-family: Montserrat-Regular;
+}
+
+.container.inside {
+    width: 700px;
+    text-align: left;
+}
