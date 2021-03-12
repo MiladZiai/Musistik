@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const path = require('path')
 const multer = require('multer')
-const db = require('/Users/miladziai/Documents/skolan/Musistik/db')
+const db = require('../../db')
 
 //setup multer with error handling
 const storage = multer.diskStorage({

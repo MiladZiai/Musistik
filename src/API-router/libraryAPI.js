@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const db = require('/Users/miladziai/Documents/skolan/Musistik/db')
+const db = require('../../db')
 require('dotenv').config()
 const checkAuth = require('../API-router/middleware/checkAuth')
 const path = require('path')

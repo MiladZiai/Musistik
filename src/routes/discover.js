@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const db = require('/Users/miladziai/Documents/skolan/Musistik/db')
+const db = require('../../db')
 
 router.get('/:page', (req, res) => {
     const isLoggedIn = req.session.isLoggedIn

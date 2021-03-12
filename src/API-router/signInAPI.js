@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const jwt = require('jsonwebtoken')
-const db = require('/Users/miladziai/Documents/skolan/Musistik/db')
+const db = require('../../db')
 const bcrypt = require('bcryptjs')
 require('dotenv').config()
 
