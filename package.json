@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@innotrade/enapso-graphdb-client": "^1.8.2",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "bulma": "^0.9.1",
