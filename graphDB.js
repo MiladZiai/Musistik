@@ -54,7 +54,8 @@ graphDBEndpoint.query(
         where {
             ?x foaf:name ?name .
             ?x mo:MusicArtist ?artist .
-            ?x mo:genre ?genre .
+            ?x mo:genre ?genre 
+            FILTER (regex(?genre, "^pop"))
         }`
 )
 .then((result) => {
