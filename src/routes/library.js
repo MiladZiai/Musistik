@@ -382,6 +382,108 @@ router.post('/addSongFromList', (req, res) => {
     }
 })
 
+router.get('/addPopSongs/:id', (req, res) => {
+    const isLoggedIn = req.session.isLoggedIn
+    const playlistId = req.params.id
+    const errors = []
+
+    if(!isLoggedIn)
+        res.redirect('/signIn')
+    else{
+        db.getPopSongs(function(error, songs) {
+            if(error) {
+                errors.push("Error occured when loading songs, please try again later!")
+                res.render("listOfPopSongs.hbs", {errors, isLoggedIn, playlistId})
+            } else {
+                res.render("listOfPopSongs.hbs", {isLoggedIn, songs, playlistId})
+            }
+        })
+    }
+})
+router.post('/addSongFromPopList', (req, res) => {
+    const isLoggedIn = req.session.isLoggedIn
+    const songId = req.body.songId
+    const playlistId = req.body.playlistId
+    
+    const errors = []
+
+    if(isLoggedIn) {
+       if(songId && playlistId) {
+            db.addSongInPlaylist(playlistId, songId , function(error){
+                if(error) {
+                    errors.push("Error occured when adding song to playlist!")
+                    db.getPopSongs(function(error, songs) {
+                        if(error) {
+                            errors.push("Error occured when loading songs, please try again later!")
+                            res.render("listOfPopSongs.hbs", {errors, isLoggedIn, playlistId})
+                        } else {
+                            res.render("listOfPopSongs.hbs", {isLoggedIn, songs, playlistId, errors})
+                        }
+                    })
+                } else {
+                    res.redirect('/library/addPopSongs/' + playlistId)
+                }
+            })
+       } else {
+            errors.push("Error occured when loading songs, please try again later!")
+            res.render("listOfPopSongs.hbs", {errors, isLoggedIn})
+       }
+    } else {
+        res.redirect('/signIn')
+    }
+})
+
+router.get('/addAkonSongs/:id', (req, res) => {
+    const isLoggedIn = req.session.isLoggedIn
+    const playlistId = req.params.id
+    const errors = []
+
+    if(!isLoggedIn)
+        res.redirect('/signIn')
+    else{
+        db.getAkonSongs(function(error, songs) {
+            if(error) {
+                errors.push("Error occured when loading songs, please try again later!")
+                res.render("listOfAkonSongs.hbs", {errors, isLoggedIn, playlistId})
+            } else {
+                res.render("listOfAkonSongs.hbs", {isLoggedIn, songs, playlistId})
+            }
+        })
+    }
+})
+router.post('/addSongFromAkonList', (req, res) => {
+    const isLoggedIn = req.session.isLoggedIn
+    const songId = req.body.songId
+    const playlistId = req.body.playlistId
+    
+    const errors = []
+
+    if(isLoggedIn) {
+       if(songId && playlistId) {
+            db.addSongInPlaylist(playlistId, songId , function(error){
+                if(error) {
+                    errors.push("Error occured when adding song to playlist!")
+                    db.getPopSongs(function(error, songs) {
+                        if(error) {
+                            errors.push("Error occured when loading songs, please try again later!")
+                            res.render("addSongFromAkonList.hbs", {errors, isLoggedIn, playlistId})
+                        } else {
+                            res.render("addSongFromAkonList.hbs", {isLoggedIn, songs, playlistId, errors})
+                        }
+                    })
+                } else {
+                    res.redirect('/library/addAkonSongs/' + playlistId)
+                }
+            })
+       } else {
+            errors.push("Error occured when loading songs, please try again later!")
+            res.render("addSongFromAkonList.hbs", {errors, isLoggedIn})
+       }
+    } else {
+        res.redirect('/signIn')
+    }
+})
+
 router.post('/deletePlaylist', (req, res) => {
     const playlistId = req.query.id
     const isLoggedIn = req.session.isLoggedIn

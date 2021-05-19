@@ -234,6 +234,28 @@ exports.getAllSongs = function(callback) {
     })
 }
 
+exports.getPopSongs = function(callback) {
+    const query = `
+                    SELECT * FROM Song as s 
+                    WHERE s.genre like 'pop'
+                `
+    db.all(query, function(error, songs) {
+        callback(error, songs)
+    })
+}
+
+exports.getAkonSongs = function(callback) {
+    const query = `
+                    SELECT * FROM Song as s 
+                    WHERE s.artistName like 'akon'
+                `
+    db.all(query, function(error, songs) {
+        callback(error, songs)
+    })
+}
+
+
+
 /*------------------------------------------------------*/
 /*------------------SongsInPlaylist---------------------*/
 /*------------------------------------------------------*/
